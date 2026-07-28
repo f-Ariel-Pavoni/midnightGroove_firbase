@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, Outlet } from "react-router-dom";
 
 const RutaProtegida = ({ children }) => {
   const usuario = localStorage.getItem("usuario");
@@ -17,7 +17,7 @@ const RutaProtegida = ({ children }) => {
     );
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default RutaProtegida;

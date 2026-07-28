@@ -1,8 +1,8 @@
-# TP Enrutamiento - MidnightGroove - Firebase
+MidnightGroove
 
 ## Descripción
 
-**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. En este proyecto ponen en práctica conceptos de React y React Router, incluyendo navegación entre páginas, rutas dinámicas, parámetros de búsqueda, rutas protegidas y organización modular del código.
+**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. En este proyecto ponen en práctica conceptos de React, React Router, react-hook-for,s, incluyendo navegación entre páginas, rutas dinámicas, parámetros de búsqueda, rutas protegidas y organización modular del código.
 
 La aplicación permite navegar por el catálogo, consultar el detalle de cada disco, filtrar los resultados por género musical y acceder a un panel de administración mediante una autenticación simulada.
 
@@ -20,6 +20,8 @@ https://f-ariel-pavoni.github.io/curso-react-js-tp7-enrutamiento/
 
 - React
 - React Router DOM
+- Firebase Firestore
+- Node.js (scripts de administración)
 - Bootstrap 5
 - CSS3
 - JavaScript (ES6+)
@@ -192,8 +194,19 @@ La aplicación implementa distintas funcionalidades de React Router:
 - Rutas dinámicas mediante `useParams`.
 - Parámetros de búsqueda con `useSearchParams`.
 - Rutas protegidas mediante autenticación simulada. El acceso al **Dashboard** se encuentra protegido. Si un usuario intenta acceder sin haberse autenticado, es redirigido automáticamente a la pantalla de **Login** y se muestra un modal con el mensaje, conservando la ruta de origen mediante `useLocation`. Una vez que la autenticación es exitosa, la información del usuario se almacena en `localStorage`, permitiendo mantener la sesión iniciada y acceder posteriormente al Dashboard desde el menú de navegación.
-- Ruta para páginas inexistentes (404). Cuando se accede a un id de disoco inexiste se muestra un not found.
+- Ruta para páginas inexistentes (404). Cuando se accede a un id de disco inexiste se muestra un not found.
 - Layout compartido utilizando rutas anidadas y `<Outlet />`.
+
+## Rutas principales
+
+| Ruta         | Descripción                  |
+| ------------ | ---------------------------- |
+| `/`          | Página principal             |
+| `/nosotros`  | Información del proyecto     |
+| `/contacto`  | Formulario de contacto       |
+| `/disco/:id` | Detalle dinámico de un disco |
+| `/login`     | Acceso administrativo        |
+| `/dashboard` | Panel protegido              |
 
 ### Diseño de la interfaz
 
