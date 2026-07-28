@@ -109,25 +109,76 @@ Las vistas principales fueron organizadas dentro de la carpeta **pages**, mientr
 
 Se implementó un **MainLayout** que contiene el `Navbar`, el `Footer` y un `<Outlet />` de React Router. Esta estructura evita repetir código entre páginas y permite utilizar rutas anidadas para renderizar el contenido correspondiente a cada ruta.
 
-### Simulación de un backend
+### Integración con Firebase Firestore
 
-Con el objetivo de desacoplar la lógica de acceso a datos de la interfaz, se implementó una estructura de servicios que simula el comportamiento de una API REST.
+La aplicación utiliza **Cloud Firestore** como base de datos para almacenar y consultar el catálogo de discos.
 
-Los datos del catálogo se toman de un archivo JSON ubicado en la carpeta pública del proyecto:
+La lógica de acceso a datos se encuentra centralizada en la carpeta **services/**, desacoplando la interfaz de usuario de la implementación de la base de datos.
 
-- `public/data/discos.json`
+Actualmente se implementan servicios como:
 
-- **services/** centraliza el acceso a dichos datos mediante funciones reutilizables como:
-  - `getDiscoById()`
-  - `getGeneros()`
-  - `authenticate()`
+- `getDiscos()`
+- `getDiscoById()`
+- `getGeneros()`
+- `authenticate()`
 
-Para el caso de la autenticacion:
+Para la autenticación se utilizan:
 
-- `usuarios.js` que contiene los usuarios utilizados para validar el acceso.
-- `usuarioService.js` que centraliza la lógica de autenticación mediante la función authenticate().
+- `usuarios.js`, que contiene los usuarios de prueba.
+- `usuarioService.js`, que centraliza la lógica mediante la función `authenticate()`.
 
-La idea de esta organización es poder reemplazar mas fácilmente los datos locales por una API REST en futuras versiones de la aplicación.
+El archivo `public/data/discos.json` ya no es utilizado por la aplicación durante su funcionamiento. Se conserva únicamente como fuente de datos para la herramienta de importación inicial (`tools/importarDiscos.js`), que permite poblar la colección `discos` de Firestore.
+
+## Tools
+
+El proyecto incluye herramientas auxiliares para administrar la carga inicial de datos en Firestore.
+
+### Importación de discos
+
+La herramienta `tools/importarDiscos.js` permite cargar los datos del catálogo desde el archivo:
+
+```text
+public/data/discos.json
+```
+
+Los datos son procesados mediante Node.js y enviados a la colección `discos` de Firestore.
+
+### Carga inicial completa
+
+Para eliminar la colección existente y volver a cargar todos los discos:
+
+```bash
+node tools/importarDiscos.js --reset
+```
+
+Este modo:
+
+1. Elimina todos los documentos existentes de la colección `discos`.
+2. Lee nuevamente el archivo `discos.json`.
+3. Inserta todos los registros desde cero.
+
+### Carga incremental
+
+Sin argumentos, la herramienta verifica los discos existentes antes de insertar nuevos registros:
+
+```bash
+node tools/importarDiscos.js
+```
+
+Este modo:
+
+1. Obtiene los documentos actuales de Firestore.
+2. Compara los IDs existentes con los datos del JSON.
+3. Solo agrega los discos que aún no existen en la colección.
+
+### Ubicación
+
+```text
+tools/
+└── importarDiscos.js
+```
+
+> **Nota:** Para ejecutar esta herramienta es necesario tener configuradas las variables de entorno de Firebase en el archivo `.env`.
 
 ### Generación dinámica del filtro
 
