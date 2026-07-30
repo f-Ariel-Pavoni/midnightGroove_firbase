@@ -1,6 +1,11 @@
 import "./ModalEstado.css";
 
 const ModalEstado = ({ tipo, mensaje, accion, textoAccion, onClose }) => {
+  const confirmar = () => {
+    accion();
+    onClose();
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-estado card shadow">
@@ -17,7 +22,7 @@ const ModalEstado = ({ tipo, mensaje, accion, textoAccion, onClose }) => {
             </button>
 
             {accion && (
-              <button className="btn btn-primary" onClick={accion}>
+              <button className="btn btn-primary" onClick={confirmar}>
                 {textoAccion}
               </button>
             )}

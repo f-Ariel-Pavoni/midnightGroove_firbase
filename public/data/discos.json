@@ -42,7 +42,8 @@
         "numero": 8,
         "titulo": "Visa"
       }
-    ]
+    ],
+    "activo": true
   },
   {
     "id": 2,
@@ -83,7 +84,8 @@
         "numero": 7,
         "titulo": "Pick Up Sticks"
       }
-    ]
+    ],
+    "activo": true
   },
   {
     "id": 3,
@@ -116,7 +118,8 @@
         "numero": 5,
         "titulo": "Lazy Bird"
       }
-    ]
+    ],
+    "activo": true
   },
   {
     "id": 4,
@@ -157,7 +160,8 @@
         "numero": 7,
         "titulo": "Saturday Night Blues"
       }
-    ]
+    ],
+    "activo": true
   },
   {
     "id": 5,
@@ -194,7 +198,8 @@
         "numero": 6,
         "titulo": "Darn That Dream"
       }
-    ]
+    ],
+    "activo": true
   },
   {
     "id": 6,
@@ -223,6 +228,7 @@
         "numero": 4,
         "titulo": "Vein Melter"
       }
-    ]
+    ],
+    "activo": true
   }
 ]
