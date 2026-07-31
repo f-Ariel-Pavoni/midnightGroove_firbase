@@ -1,10 +1,21 @@
 import { Navigate, useLocation, Outlet } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const RutaProtegida = ({ children }) => {
-  const usuario = localStorage.getItem("usuario");
+  const { user, loading } = useAuth();
   const location = useLocation();
 
-  if (!usuario) {
+  if (loading) {
+    return (
+      <div className="text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
     return (
       <Navigate
         to="/login"
