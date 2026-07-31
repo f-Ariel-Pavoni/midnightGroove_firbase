@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { authenticate } from "../../services/usuarioService";
+import useAuth from "../../hooks/useAuth";
 
 const FormularioLogin = ({ onLogin }) => {
-  const [usuario, setUsuario] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const { user, error, login } = useAuth();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const usuarioEncontrado = authenticate(usuario, password);
+    const usuarioFirebase = await login(email, password);
 
-    if (usuarioEncontrado) {
-      onLogin(usuarioEncontrado);
+    if (usuarioFirebase) {
+      onLogin(usuarioFirebase);
     } else {
       onLogin(null);
     }
@@ -20,17 +22,17 @@ const FormularioLogin = ({ onLogin }) => {
   return (
     <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
       <div className="mb-3">
-        <label htmlFor="usuario" className="form-label">
-          Usuario
+        <label htmlFor="email" className="form-label">
+          Email
         </label>
 
         <input
-          id="usuario"
+          id="email"
           type="text"
           className="form-control"
-          placeholder="Ingrese su usuario"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
+          placeholder="Ingrese su email..."
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           autoComplete="username"
           required
         />
@@ -45,7 +47,7 @@ const FormularioLogin = ({ onLogin }) => {
           id="password"
           type="password"
           className="form-control"
-          placeholder="Ingrese su contraseña"
+          placeholder="Ingrese su contraseña..."
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="current-password"

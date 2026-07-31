@@ -3,23 +3,41 @@ import {
   getDiscosAdmin,
   desactivarDisco,
   toggleEstadoDisco,
-} from "../services/discoService";
+  eliminarDisco,
+} from "../services/adminServices";
 
 const useDiscosAdmin = () => {
   const [discos, setDiscos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const cargarDiscos = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const data = await getDiscosAdmin();
+      setDiscos(data);
+    } catch (error) {
+      console.error("ERROR CARGANDO DISCOS:", error);
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const desactivar = async (firebaseId) => {
+    setError(null);
     try {
       await desactivarDisco(firebaseId);
       await cargarDiscos();
     } catch (error) {
+      console.error("ERROR DESACTIVANDO DISCO:", error);
       setError(error);
     }
   };
 
   const toggleEstado = async (firebaseId) => {
+    setError(null);
     try {
       await toggleEstadoDisco(firebaseId);
       await cargarDiscos();
@@ -29,14 +47,14 @@ const useDiscosAdmin = () => {
     }
   };
 
-  const cargarDiscos = async () => {
+  const eliminar = async (firebaseId) => {
+    setError(null);
     try {
-      const data = await getDiscosAdmin();
-      setDiscos(data);
+      await eliminarDisco(firebaseId);
+      await cargarDiscos();
     } catch (error) {
+      console.error("ERROR ELIMINANDO DISCO:", error);
       setError(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -49,6 +67,7 @@ const useDiscosAdmin = () => {
     loading,
     error,
     desactivar,
+    eliminar,
     toggleEstado,
   };
 };

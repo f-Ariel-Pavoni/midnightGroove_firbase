@@ -1,30 +1,12 @@
-import {
-  collection,
-  getDocs,
-  getDoc,
-  query,
-  where,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-export const getDiscosAdmin = async () => {
-  try {
-    const snapshot = await getDocs(collection(db, "discos"));
-    return snapshot.docs.map((doc) => ({
-      firebaseId: doc.id,
-      ...doc.data(),
-    }));
-  } catch (error) {
-    console.error("ERROR FIREBASE:", error);
-    throw new Error("Error al cargar discos desde Firestore.");
-  }
-};
+const discosRef = collection(db, "discos");
 
+// Trae todos los discos que estan activos
 export const getDiscos = async () => {
   try {
-    const qry = query(collection(db, "discos"), where("activo", "==", true));
+    const qry = query(discosRef, where("activo", "==", true));
 
     const snapshot = await getDocs(qry);
     return snapshot.docs.map((doc) => ({
@@ -36,35 +18,22 @@ export const getDiscos = async () => {
   }
 };
 
-//  funcion que toma discos del local
-//  export const getDiscos = async () => {
-//   const respuesta = await fetch(`${import.meta.env.BASE_URL}data/discos.json`);
-//   if (!respuesta.ok) throw new Error("Error al cargar discos.");
-
-//   return respuesta.json();
-// };
-
+// Trae el primer disco por id (se espera id unico)
 export const getDiscoById = async (id) => {
-  const discos = await getDiscos();
-  return discos.find((disco) => disco.id === Number(id));
+  const qry = query(
+    discosRef,
+    where("id", "==", Number(id)),
+    where("activo", "==", true),
+  );
+  const snapshot = await getDocs(qry);
+
+  if (snapshot.empty) return null;
+
+  return snapshot.docs[0].data();
 };
 
+// Devuelve un array de generos extraido de la lista de discos.
 export const getGeneros = async () => {
   const discos = await getDiscos();
   return [...new Set(discos.map((disco) => disco.genero))];
-};
-
-export const desactivarDisco = async (firebaseId) => {
-  const discoRef = doc(db, "discos", firebaseId);
-  await updateDoc(discoRef, { activo: false });
-};
-
-export const toggleEstadoDisco = async (firebaseId) => {
-  const discoRef = doc(db, "discos", firebaseId);
-  const discoSnap = await getDoc(discoRef);
-  if (!discoSnap.exists()) {
-    throw new Error("El disco no existe.");
-  }
-  const nuevoEstado = !discoSnap.data().activo;
-  await updateDoc(discoRef, { activo: nuevoEstado });
 };
