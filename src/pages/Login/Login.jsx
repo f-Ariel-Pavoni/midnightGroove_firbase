@@ -15,7 +15,6 @@ const Login = () => {
   const destino = location.state?.from?.pathname || "/dashboard";
 
   const manejarLogin = (usuario) => {
-    console.log("USUARIO RECIBIDO:", usuario);
     if (usuario) {
       navigate(destino);
     } else setMostrarModal(true);

@@ -1,7 +1,19 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import ModalEstado from "../ModalEstado/ModalEstado";
+
 import "./Navbar.css";
 
 const Navbar = () => {
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const { user, logout } = useAuth();
+
+  const handleLogOut = () => {
+    console.log("Inicia logOut");
+    setMostrarModal(true);
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -44,16 +56,33 @@ const Navbar = () => {
                   Dashboard
                 </Link>
               </li>
-
               <li className="nav-item">
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
+                {user ? (
+                  <button
+                    className="nav-link btn btn-link"
+                    onClick={handleLogOut}
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                )}
               </li>
             </ul>
           </div>
         </div>
       </nav>
+      {mostrarModal && (
+        <ModalEstado
+          tipo="Alert"
+          mensaje="Vas a cerrar la sesión"
+          textoAccion="Logout"
+          onClose={() => setMostrarModal(false)}
+          accion={logout}
+        />
+      )}
     </>
   );
 };
