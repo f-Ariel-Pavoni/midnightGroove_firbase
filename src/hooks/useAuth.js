@@ -35,8 +35,10 @@ const useAuth = () => {
   };
 
   useEffect(() => {
-    escucharSesion((usuario) => setUser(usuario));
-    setLoading(false);
+    escucharSesion((usuario) => {
+      setUser(usuario);
+      setLoading(false);
+    });
   }, []);
 
   return {
