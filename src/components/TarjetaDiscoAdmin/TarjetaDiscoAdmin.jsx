@@ -1,5 +1,12 @@
-const TarjetaDiscoAdmin = ({ disco, cambiarEstado, editarDisco }) => {
-  const { firebaseId, id, titulo, artista, genero, activo } = disco;
+import { FaEdit, FaTrash, FaPowerOff, FaCheckCircle } from "react-icons/fa";
+
+const TarjetaDiscoAdmin = ({
+  disco,
+  cambiarEstado,
+  editarDisco,
+  eliminarDisco,
+}) => {
+  const { firebaseId, titulo, artista, genero, activo } = disco;
 
   return (
     <div className="card-body">
@@ -14,17 +21,30 @@ const TarjetaDiscoAdmin = ({ disco, cambiarEstado, editarDisco }) => {
 
         <div className="col-md-4 d-flex gap-2 justify-content-end">
           <button
-            className="btn btn-success btn-sm"
+            aria-label="Editar disco"
+            title="Editar disco"
+            className="btn btn-success"
             onClick={() => editarDisco(firebaseId)}
           >
-            Editar
+            <FaEdit />
           </button>
 
           <button
-            className="btn btn-danger btn-sm"
+            aria-label={activo ? "Desactivar disco" : "Activar disco"}
+            title={activo ? "Desactivar disco" : "Activar disco"}
+            className="btn btn-warning"
             onClick={() => cambiarEstado(disco)}
           >
-            {activo ? "Desactivar" : "Activar"}
+            {activo ? <FaPowerOff /> : <FaCheckCircle />}
+          </button>
+
+          <button
+            aria-label="Eliminar disco"
+            title="Eliminar disco"
+            className="btn btn-danger"
+            onClick={() => eliminarDisco(disco)}
+          >
+            <FaTrash />
           </button>
         </div>
       </div>

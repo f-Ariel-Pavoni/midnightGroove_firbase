@@ -9,8 +9,15 @@ import useDiscosAdmin from "../../hooks/useDiscosAdmin";
 
 const AdministrarDiscos = () => {
   const [busqueda, setBusqueda] = useState("");
-  const { discos, loading, error, desactivar, toggleEstado, crearDisco } =
-    useDiscosAdmin();
+  const {
+    discos,
+    loading,
+    error,
+    desactivar,
+    toggleEstado,
+    crearDisco,
+    eliminar,
+  } = useDiscosAdmin();
   const [mostrarModal, setMostrarModal] = useState(false);
   const [tipoMensaje, setTipoMensaje] = useState(null);
   const [accion, setAccion] = useState(null);
@@ -31,15 +38,6 @@ const AdministrarDiscos = () => {
     console.log("editar disco");
   };
 
-  const desactivarDisco = (firebaseId) => {
-    console.log("desactivar disco");
-    setMostrarModal(true);
-    setTipoMensaje("alerta");
-    setMensajeAccionBtn("Desactivar");
-    setAccion(() => () => desactivar(firebaseId));
-    setMensajeAccion("Vas a desactivar el disco");
-  };
-
   const cambiarEstado = (disco) => {
     const accionTexto = disco.activo ? "Desactivar" : "Activar";
     console.log("Cambiar estado disco");
@@ -49,6 +47,18 @@ const AdministrarDiscos = () => {
     setTipoMensaje("alerta");
     setMensajeAccionBtn(accionTexto);
     setAccion(() => () => toggleEstado(disco.firebaseId));
+    setMensajeAccion(`${accionTexto} disco "${disco.titulo}"`);
+  };
+
+  const eliminarDisco = (disco) => {
+    const accionTexto = "Eliminar";
+    console.log("Eliminar disco");
+    console.log(disco.titulo, disco.firebaseId);
+
+    setMostrarModal(true);
+    setTipoMensaje("alerta");
+    setMensajeAccionBtn(accionTexto);
+    setAccion(() => () => eliminar(disco.firebaseId));
     setMensajeAccion(`${accionTexto} disco "${disco.titulo}"`);
   };
 
@@ -90,6 +100,7 @@ const AdministrarDiscos = () => {
             disco={disco}
             editarDisco={editarDisco}
             cambiarEstado={cambiarEstado}
+            eliminarDisco={eliminarDisco}
           />
         )}
       />
