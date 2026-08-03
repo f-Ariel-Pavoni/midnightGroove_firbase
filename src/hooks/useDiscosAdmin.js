@@ -4,6 +4,7 @@ import {
   desactivarDisco,
   toggleEstadoDisco,
   eliminarDisco,
+  agregarDisco,
 } from "../services/adminServices";
 
 const useDiscosAdmin = () => {
@@ -58,6 +59,17 @@ const useDiscosAdmin = () => {
     }
   };
 
+  const crearDisco = async (disco) => {
+    setError(null);
+    try {
+      await agregarDisco(disco);
+      await cargarDiscos();
+    } catch (error) {
+      console.error("ERROR AGREGANDO DISCO:", error);
+      setError(error);
+    }
+  };
+
   useEffect(() => {
     cargarDiscos();
   }, []);
@@ -66,6 +78,7 @@ const useDiscosAdmin = () => {
     discos,
     loading,
     error,
+    crearDisco,
     desactivar,
     eliminar,
     toggleEstado,
