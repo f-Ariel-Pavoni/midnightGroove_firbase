@@ -1,18 +1,23 @@
 import { useState, useMemo } from "react";
 import Buscador from "../../components/Buscador/Buscador";
+import Modal from "../../components/Modal/Modal";
 import ModalEstado from "../../components/ModalEstado/ModalEstado";
 import ListaDiscos from "../../components/ListaDiscos/ListaDiscos";
 import TarjetaDiscoAdmin from "../../components/TarjetaDiscoAdmin/TarjetaDiscoAdmin";
+import FormularioDisco from "../../components/FormularioDisco/FormularioDisco";
 import useDiscosAdmin from "../../hooks/useDiscosAdmin";
 
-const AdministarDiscos = () => {
+const AdministrarDiscos = () => {
   const [busqueda, setBusqueda] = useState("");
-  const { discos, loading, error, desactivar, toggleEstado } = useDiscosAdmin();
+  const { discos, loading, error, desactivar, toggleEstado, crearDisco } =
+    useDiscosAdmin();
   const [mostrarModal, setMostrarModal] = useState(false);
   const [tipoMensaje, setTipoMensaje] = useState(null);
   const [accion, setAccion] = useState(null);
   const [mensajeAccion, setMensajeAccion] = useState(null);
   const [mensajeAccionBtn, setMensajeAccionBtn] = useState(null);
+
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   const discosFiltrados = useMemo(() => {
     if (!busqueda) return discos;
@@ -47,6 +52,11 @@ const AdministarDiscos = () => {
     setMensajeAccion(`${accionTexto} disco "${disco.titulo}"`);
   };
 
+  const handleNuevoDisco = () => {
+    setMostrarFormulario(true);
+    console.log("Vas a agregar un disco");
+  };
+
   if (loading) {
     return <p>Cargando discos...</p>;
   }
@@ -57,12 +67,21 @@ const AdministarDiscos = () => {
 
   return (
     <>
-      <h1>Administar Discos</h1>
-      <Buscador
-        busqueda={busqueda}
-        setBusqueda={setBusqueda}
-        placeholder="Buscar disco..."
-      />
+      <h1>Administrar Discos</h1>
+      <div className="row mb-3">
+        <div className="col-auto">
+          <button className="btn btn-dark" onClick={handleNuevoDisco}>
+            + Agregar disco
+          </button>
+        </div>
+        <div className="col">
+          <Buscador
+            busqueda={busqueda}
+            setBusqueda={setBusqueda}
+            placeholder="Buscar disco..."
+          />
+        </div>
+      </div>
       <ListaDiscos
         discos={discosFiltrados}
         layout="list"
@@ -83,8 +102,16 @@ const AdministarDiscos = () => {
           accion={accion}
         />
       )}
+      {mostrarFormulario && (
+        <Modal onClose={() => setMostrarFormulario(false)} titulo="Nuevo disco">
+          <FormularioDisco
+            onClose={() => setMostrarFormulario(false)}
+            crearDisco={crearDisco}
+          />
+        </Modal>
+      )}
     </>
   );
 };
 
-export default AdministarDiscos;
+export default AdministrarDiscos;
