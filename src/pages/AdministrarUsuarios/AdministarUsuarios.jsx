@@ -1,5 +1,12 @@
+import Encabezado from "../../components/Encabezado/Encabezado";
+
 const AdministarUsuarios = () => {
-  return <h1>Administar Usuarios</h1>;
+  return (
+    <Encabezado
+      titulo="Administrar Usuarios"
+      bajada="Administra los usuarios del sitio."
+    />
+  );
 };
 
 export default AdministarUsuarios;

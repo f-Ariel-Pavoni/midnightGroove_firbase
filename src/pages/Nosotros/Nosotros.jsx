@@ -1,7 +1,8 @@
+import Encabezado from "../../components/Encabezado/Encabezado";
 function Nosotros() {
   return (
     <>
-      <h1>Nosotros</h1>
+      <Encabezado titulo="Nosotros" bajada="Conocé quenes somos." />
     </>
   );
 }
