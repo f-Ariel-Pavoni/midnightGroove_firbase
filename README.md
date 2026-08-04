@@ -42,6 +42,11 @@ Podés ver la aplicación funcionando en Netlify:
 
 [midnightGroove](https://midnightgroove.netlify.app/)
 
+Podes acceder a la sección privada cone estos datos: 
+
+- usuario: testuser2@mail.com
+- password: qwerty
+
 ---
 
 ## Tecnologías utilizadas
