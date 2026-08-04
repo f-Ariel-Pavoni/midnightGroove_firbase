@@ -74,12 +74,13 @@ const Disco = () => {
         </div>
       </div>
 
-      {/* Tracklist */}
-      <div className="mt-5">
-        <h2>Tracklist</h2>
+      {disco.tracklist && (
+        <div className="mt-5">
+          <h2>Tracklist</h2>
 
-        <Tracklist tracklist={disco.tracklist} />
-      </div>
+          <Tracklist tracklist={disco.tracklist} />
+        </div>
+      )}
     </div>
   );
 };
