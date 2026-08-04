@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import FormularioLogin from "../../components/FormularioLogin/FormularioLogin";
 import ModalEstado from "../../components/ModalEstado/ModalEstado";
+import Encabezado from "../../components/Encabezado/Encabezado";
 
 const Login = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -22,7 +23,7 @@ const Login = () => {
 
   return (
     <>
-      <h1>Login</h1>
+      <Encabezado titulo="Login" />
       <FormularioLogin onLogin={manejarLogin} />
       {mostrarNotLogged && (
         <ModalEstado

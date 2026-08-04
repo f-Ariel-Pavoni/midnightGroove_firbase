@@ -6,6 +6,7 @@ import ListaDiscos from "../../components/ListaDiscos/ListaDiscos";
 import TarjetaDiscoAdmin from "../../components/TarjetaDiscoAdmin/TarjetaDiscoAdmin";
 import FormularioDisco from "../../components/FormularioDisco/FormularioDisco";
 import useDiscosAdmin from "../../hooks/useDiscosAdmin";
+import Encabezado from "../../components/Encabezado/Encabezado";
 
 const AdministrarDiscos = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -77,7 +78,10 @@ const AdministrarDiscos = () => {
 
   return (
     <>
-      <h1>Administrar Discos</h1>
+      <Encabezado
+        titulo="Administrar Discos"
+        bajada="Agregá, editá o eliminá los discos del catálogo."
+      />
       <div className="row mb-3">
         <div className="col-auto">
           <button className="btn btn-dark" onClick={handleNuevoDisco}>

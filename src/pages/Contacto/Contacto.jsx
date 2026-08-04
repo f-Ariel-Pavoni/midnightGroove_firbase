@@ -1,9 +1,7 @@
+import Encabezado from "../../components/Encabezado/Encabezado";
+
 function Contacto() {
-  return (
-    <>
-      <h1>Contacto</h1>
-    </>
-  );
+  return <Encabezado titulo="Contacto" />;
 }
 
 export default Contacto;

@@ -1,10 +1,14 @@
 import Catalogo from "../../components/Catalogo/Catalogo";
 import AccesoAdmin from "../../components/AccesoAdmin/AccesoAdmin";
+import Encabezado from "../../components/Encabezado/Encabezado";
 
 function Inicio() {
   return (
     <>
-      <h1>Catalogo de discos</h1>
+      <Encabezado
+        titulo="Catálogo de discos"
+        bajada="Mirá nuestra collección de discos disponibles."
+      />
       <Catalogo />
       <AccesoAdmin />
     </>
