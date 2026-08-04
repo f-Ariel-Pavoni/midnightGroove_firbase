@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { discoSchema as schema } from "../../schemas/discoSchema";
+import usePortadas from "../../hooks/usePortadas";
 
 const FormularioDisco = ({ onClose, crearDisco }) => {
   const {
@@ -9,6 +10,8 @@ const FormularioDisco = ({ onClose, crearDisco }) => {
     formState: { errors },
     reset,
   } = useForm({ resolver: zodResolver(schema) });
+
+  const { portadas, loading } = usePortadas();
 
   const handleCrear = async (data) => {
     await crearDisco(data);
@@ -144,10 +147,37 @@ const FormularioDisco = ({ onClose, crearDisco }) => {
           )}
         </div>
 
+        {/*Portada*/}
+        <div className="mb-3">
+          <label htmlFor="portada" className="form-label">
+            Portada
+          </label>
+
+          <select id="portada" className="form-select" {...register("portada")}>
+            <option value="">Seleccionar portada</option>
+
+            {portadas.map((item) => (
+              <option key={item.firebaseId} value={item.portada}>
+                {item.nombre}
+              </option>
+            ))}
+          </select>
+
+          {loading && (
+            <small className="text-muted">Cargando portadas...</small>
+          )}
+
+          {errors.portada && (
+            <small className="text-danger d-block mt-1" role="alert">
+              {errors.portada.message}
+            </small>
+          )}
+        </div>
+
         {/*Precio*/}
         <div className="mb-3">
           <label htmlFor="precio" className="form-label">
-            Precio
+            Precio <span className="text-danger">*</span>
           </label>
 
           <input

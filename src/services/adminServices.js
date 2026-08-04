@@ -61,3 +61,19 @@ export const agregarDisco = async (disco) => {
   });
   console.log(`El disco ${disco.titulo} fue subido con referencia ${ref.id}`);
 };
+
+// Portadas
+
+export const getPortadas = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "portadas"));
+
+    return snapshot.docs.map((doc) => ({
+      firebaseId: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("ERROR FIREBASE:", error);
+    throw new Error("Error al obtener portadas Firestore.");
+  }
+};
