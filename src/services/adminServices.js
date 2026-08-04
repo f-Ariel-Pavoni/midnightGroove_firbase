@@ -53,6 +53,11 @@ export const agregarDisco = async (disco) => {
   const snapshot = await getDocs(collection(db, "discos"));
   const ids = snapshot.docs.map((doc) => doc.data().id);
   const nuevoId = Math.max(...ids, 0) + 1;
-  const ref = await addDoc(collection(db, "discos"), { id: nuevoId, ...disco });
+  const ref = await addDoc(collection(db, "discos"), {
+    ...disco,
+    id: nuevoId,
+    activo: true,
+    tracklist: disco.tracklist ?? [],
+  });
   console.log(`El disco ${disco.titulo} fue subido con referencia ${ref.id}`);
 };
