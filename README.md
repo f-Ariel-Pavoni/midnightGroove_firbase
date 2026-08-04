@@ -47,6 +47,8 @@ Podes acceder a la sección privada cone estos datos:
 - usuario: testuser2@mail.com
 - password: qwerty
 
+(Usuario creado exclusivamente para demostración)
+
 ---
 
 ## Tecnologías utilizadas
@@ -136,7 +138,8 @@ Actualmente se implementan servicios como:
 - `getDiscos()`
 - `getDiscoById()`
 - `getGeneros()`
-- `authenticate()`
+- authService.js para autenticación mediante Firebase Authentication
+- servicios administrativos para operaciones CRUD
 
 El archivo `public/data/discos.json` ya no es utilizado por la aplicación durante su funcionamiento. Se conserva únicamente como fuente de datos para la herramienta de importación inicial (`tools/importarDiscos.js`), que permite poblar la colección `discos` de Firestore.
 
@@ -157,6 +160,78 @@ Actualmente se implementa:
   - Maneja el usuario autenticado, el proceso de login y los errores asociados.
 
 Las rutas administrativas se encuentran protegidas mediante un componente de ruta protegida, que valida la existencia de un usuario autenticado antes de permitir el acceso al Dashboard.
+
+## Gestión del catálogo mediante CRUD
+
+La aplicación implementa un sistema de administración del catálogo de discos utilizando las operaciones CRUD (Create, Read, Update, Delete) sobre la colección `discos` de Cloud Firestore.
+
+La lógica de estas operaciones se encuentra separada de los componentes visuales mediante servicios y hooks personalizados, permitiendo mantener una arquitectura donde la interfaz de usuario no tiene acceso directo a la base de datos.
+
+### Create (Crear)
+
+La creación de nuevos discos se realiza desde el panel administrativo mediante un formulario desarrollado con **React Hook Form** y validado utilizando **Zod**.
+
+El formulario permite ingresar la información principal del álbum:
+
+- título
+- artista
+- año
+- género
+- sello discográfico
+- descripción
+- precio
+- portada
+
+Antes de enviar los datos a Firestore se aplican validaciones de formato y reglas de negocio, evitando almacenar información incompleta o inconsistente.
+
+Una vez validado el formulario, el servicio correspondiente utiliza el método `addDoc()` del SDK de Firebase para crear un nuevo documento dentro de la colección `discos`.
+
+### Read (Consultar)
+
+La lectura de información se realiza mediante consultas a Cloud Firestore utilizando los métodos `getDocs()`, `query()` y `where()`.
+
+La aplicación implementa diferentes lecturas según el contexto:
+
+- Obtención del catálogo público de discos.
+- Consulta del detalle de un disco mediante su identificador.
+- Obtención dinámica de géneros disponibles para los filtros.
+- Carga de datos para el panel administrativo.
+
+La información recuperada desde Firestore es gestionada mediante hooks personalizados, separando la lógica de carga, estados de espera y manejo de errores de los componentes de presentación.
+
+### Update (Actualizar)
+
+La modificación de registros se realiza desde el panel administrativo mediante operaciones de actualización sobre documentos existentes de Firestore.
+
+Para identificar cada documento se utiliza su referencia mediante `doc()`, y luego se aplican modificaciones utilizando `updateDoc()`.
+
+Actualmente se contempla la actualización del estado del disco mediante el campo `activo`, permitiendo administrar la disponibilidad del registro dentro del catálogo.
+
+Esta implementación permite realizar una eliminación lógica del contenido, manteniendo la información almacenada y evitando perder datos históricos.
+
+### Delete (Eliminar)
+
+La eliminación de registros utiliza el método `deleteDoc()` de Firebase cuando se requiere eliminar físicamente un documento de Firestore.
+
+Además, la aplicación utiliza el campo booleano `activo` como mecanismo de control de disponibilidad, permitiendo ocultar discos del catálogo sin eliminar inmediatamente la información almacenada.
+
+Esta combinación permite diferenciar entre eliminación física y desactivación lógica, brindando mayor flexibilidad en la administración del catálogo.
+
+### Servicios y hooks relacionados
+
+La gestión del CRUD se encuentra organizada mediante:
+
+- `discoService.js`
+  - Operaciones de consulta del catálogo público.
+  - Obtención de discos y detalles.
+
+- `adminServices.js`
+  - Operaciones administrativas sobre Firestore.
+  - Creación, actualización, desactivación y eliminación de discos.
+
+- `useDiscosAdmin.js`
+  - Hook personalizado que centraliza la lógica del panel administrativo.
+  - Maneja carga de datos, estados de loading, errores y acciones CRUD.
 
 
 ## Tools
@@ -221,7 +296,7 @@ La aplicación implementa distintas funcionalidades de React Router:
 - Rutas públicas.
 - Rutas dinámicas mediante `useParams`.
 - Parámetros de búsqueda con `useSearchParams`.
-- Rutas protegidas mediante autenticación simulada. El acceso al **Dashboard** se encuentra protegido. Si un usuario intenta acceder sin haberse autenticado, es redirigido automáticamente a la pantalla de **Login** y se muestra un modal con el mensaje, conservando la ruta de origen mediante `useLocation`. Una vez que la autenticación es exitosa, la información del usuario se almacena en `localStorage`, permitiendo mantener la sesión iniciada y acceder posteriormente al Dashboard desde el menú de navegación.
+- Rutas protegidas mediante Firebase Authentication. El acceso al **Dashboard** se encuentra protegido. Si un usuario intenta acceder sin haberse autenticado, es redirigido automáticamente a la pantalla de **Login** y se muestra un modal con el mensaje, conservando la ruta de origen mediante `useLocation`. 
 - Ruta para páginas inexistentes (404). Cuando se accede a un id de disco inexiste se muestra un not found.
 - Layout compartido utilizando rutas anidadas y `<Outlet />`.
 
