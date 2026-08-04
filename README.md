@@ -322,7 +322,7 @@ Bootstrap fue utilizado como base para construir una interfaz responsive, comple
 Clonar el repositorio:
 
 ```bash
-git clone [https://github.com/f-Ariel-Pavoni/curso-react-js-tp7-enrutamiento](https://github.com/f-Ariel-Pavoni/midnightGroove_firbase)
+git clone (https://github.com/f-Ariel-Pavoni/midnightGroove_firbase)
 ```
 
 Ingresar al directorio del proyecto:
