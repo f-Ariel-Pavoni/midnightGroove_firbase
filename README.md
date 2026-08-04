@@ -12,7 +12,7 @@ La aplicación permite navegar por el catálogo, consultar el detalle de cada di
 
 Podés ver la aplicación funcionando en Netlify:
 
-[https://f-ariel-pavoni.github.io/curso-react-js-tp7-enrutamiento/](https://midnightgroove.netlify.app/)
+[midnightGroove](https://midnightgroove.netlify.app/)
 
 ---
 
