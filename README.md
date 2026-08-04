@@ -10,22 +10,25 @@ La aplicación permite navegar por el catálogo, consultar el detalle de cada di
 
 ## Demo
 
-Podés ver la aplicación funcionando en GitHub Pages:
+Podés ver la aplicación funcionando en Netlify:
 
-https://f-ariel-pavoni.github.io/curso-react-js-tp7-enrutamiento/
+[https://f-ariel-pavoni.github.io/curso-react-js-tp7-enrutamiento/](https://midnightgroove.netlify.app/)
 
 ---
 
 ## Tecnologías utilizadas
 
 - React
-- React Router DOM
-- Firebase Firestore
-- Node.js (scripts de administración)
-- Bootstrap 5
-- CSS3
-- JavaScript (ES6+)
 - Vite
+- JavaScript (ES6+)
+- React Router DOM
+- React Hook Form
+- Zod
+- Firebase Authentication
+- Cloud Firestore
+- Bootstrap 5
+- React Icons
+- CSS3
 
 ---
 
@@ -54,45 +57,23 @@ https://f-ariel-pavoni.github.io/curso-react-js-tp7-enrutamiento/
 ## Estructura del proyecto
 
 ```text
-public/
-├── data/
-│   └── discos.json
-└── img/
-    └── ...
 src/
-├── components/
-│   ├── AccesoAdmin/
-│   ├── Catalogo/
-│   ├── FiltroSelect/
-│   ├── Footer/
-│   ├── ModalEstado/
-│   ├── Navbar/
-│   ├── RutaProtegida/
-│   ├── TarjetaDisco/
-│   ├── Tracklist/
-│   └── ...
-│
-├── data/
-│   └── usuarios.js
-│
-├── layouts/
-│   └── MainLayout.jsx
-│
-├── pages/
-│   ├── Contacto/
-│   ├── Dashboard/
-│   ├── Disco/
-│   ├── Inicio/
-│   ├── Login/
-│   ├── Nosotros/
-│   └── NotFound/
-│
-├── services/
-│   ├── discoService.js
-│   └── usuarioService.js
-│
+├── components/      # Componentes reutilizables de interfaz
+├── hooks/           # Hooks personalizados para lógica de estado y datos
+├── layouts/         # Estructuras compartidas de páginas
+├── pages/           # Vistas principales de la aplicación
+├── schemas/         # Validaciones con Zod
+├── services/        # Lógica de acceso a Firebase y operaciones CRUD
+├── firebase/        # Configuración de Firebase
 ├── App.jsx
 └── main.jsx
+
+tools/
+└── importarDiscos.js # Script para carga inicial de datos en Firestore
+
+public/
+├── img/             # Recursos estáticos
+└── data/            # Datos utilizados para importación inicial
 ```
 
 ---
@@ -124,12 +105,26 @@ Actualmente se implementan servicios como:
 - `getGeneros()`
 - `authenticate()`
 
-Para la autenticación se utilizan:
-
-- `usuarios.js`, que contiene los usuarios de prueba.
-- `usuarioService.js`, que centraliza la lógica mediante la función `authenticate()`.
-
 El archivo `public/data/discos.json` ya no es utilizado por la aplicación durante su funcionamiento. Se conserva únicamente como fuente de datos para la herramienta de importación inicial (`tools/importarDiscos.js`), que permite poblar la colección `discos` de Firestore.
+
+### Autenticación con Firebase
+
+La aplicación utiliza **Firebase Authentication** para gestionar el acceso al panel administrativo.
+
+La lógica de autenticación se encuentra separada en la carpeta `services/`, desacoplando la interfaz de usuario del proveedor de autenticación.
+
+Actualmente se implementa:
+
+- `authService.js`
+  - Centraliza las operaciones de autenticación.
+  - Gestiona el inicio de sesión mediante Firebase Authentication.
+
+- `useAuth.js`
+  - Hook personalizado que encapsula la lógica de autenticación.
+  - Maneja el usuario autenticado, el proceso de login y los errores asociados.
+
+Las rutas administrativas se encuentran protegidas mediante un componente de ruta protegida, que valida la existencia de un usuario autenticado antes de permitir el acceso al Dashboard.
+
 
 ## Tools
 
@@ -219,7 +214,7 @@ Bootstrap fue utilizado como base para construir una interfaz responsive, comple
 Clonar el repositorio:
 
 ```bash
-git clone https://github.com/f-Ariel-Pavoni/curso-react-js-tp7-enrutamiento
+git clone [https://github.com/f-Ariel-Pavoni/curso-react-js-tp7-enrutamiento](https://github.com/f-Ariel-Pavoni/midnightGroove_firbase)
 ```
 
 Ingresar al directorio del proyecto:
@@ -243,7 +238,7 @@ npm run dev
 La aplicación estará disponible en:
 
 ```text
-http://localhost:5173/curso-react-js-tp7-enrutamiento
+http://localhost:5173/
 ```
 
 ---
