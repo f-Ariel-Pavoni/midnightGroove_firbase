@@ -2,9 +2,37 @@ MidnightGroove
 
 ## Descripción
 
-**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. En este proyecto ponen en práctica conceptos de React, React Router, react-hook-for,s, incluyendo navegación entre páginas, rutas dinámicas, parámetros de búsqueda, rutas protegidas y organización modular del código.
+**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. Este proyecto es la evolución de la tarea de enrutamiento. Actualmente comprende todos los temas tratados en la cursada, los mismos se detallan en este documento. 
 
-La aplicación permite navegar por el catálogo, consultar el detalle de cada disco, filtrar los resultados por género musical y acceder a un panel de administración mediante una autenticación simulada.
+### Para las tareas 1 y 2 del módulo 3 (Integración con Firebase)
+
+Durante la evolución del proyecto se realizó una migración desde una fuente de datos local basada en archivos JSON hacia una arquitectura utilizando servicios de Firebase.
+
+Inicialmente el catálogo de discos se encontraba almacenado en un archivo `discos.json` dentro de la carpeta pública del proyecto. Esta estructura permitía simular una API mediante la carga de datos locales, pero presentaba limitaciones al momento de implementar operaciones administrativas y persistencia real de información.
+
+Para solucionar esto se creó un proyecto en Firebase y se configuró **Cloud Firestore** como base de datos NoSQL. Dentro de Firestore se creó la colección `discos`, donde cada documento representa un álbum del catálogo. La información almacenada incluye datos como título, artista, año, género, sello discográfico, descripción, precio, portada y estado del registro.
+
+La comunicación con Firestore fue encapsulada dentro de la carpeta `services/`, evitando que los componentes de React tengan conocimiento directo de la implementación de la base de datos. Para esto se utilizaron los métodos proporcionados por el SDK de Firebase:
+
+- `collection()` para obtener referencias a las colecciones de Firestore.
+- `getDocs()` para recuperar múltiples documentos.
+- `query()` y `where()` para realizar consultas filtradas.
+- `doc()` para trabajar con documentos específicos.
+- `addDoc()` para crear nuevos registros.
+- `updateDoc()` para modificar información existente.
+- `deleteDoc()` para eliminar documentos.
+
+A partir de esta implementación se construyeron los servicios necesarios para gestionar el catálogo, permitiendo realizar operaciones CRUD desde el panel administrativo.
+
+Además, se desarrolló una herramienta auxiliar utilizando Node.js (`tools/importarDiscos.js`) que permite cargar inicialmente los datos desde el archivo JSON hacia Firestore. Esta herramienta contempla dos modos de funcionamiento: una carga completa mediante la eliminación y recreación de la colección, y una carga incremental que compara los identificadores existentes antes de insertar nuevos registros.
+
+Para la autenticación del panel administrativo se implementó **Firebase Authentication**, reemplazando la autenticación simulada utilizada durante las primeras etapas del proyecto. Se configuró el proveedor de autenticación mediante correo electrónico y contraseña, utilizando el método `signInWithEmailAndPassword()` del SDK de Firebase.
+
+La lógica de autenticación fue separada mediante un servicio (`authService.js`) y un hook personalizado (`useAuth.js`). El servicio se encarga de comunicarse con Firebase, mientras que el hook administra el estado del usuario autenticado, errores y acciones disponibles para los componentes.
+
+El acceso al Dashboard administrativo fue protegido mediante rutas privadas, verificando la existencia de un usuario autenticado antes de permitir la navegación. En caso contrario, el usuario es redirigido al Login conservando la ruta original para poder continuar luego de autenticarse correctamente.
+
+
 
 ---
 
