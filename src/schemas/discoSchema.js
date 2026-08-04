@@ -48,6 +48,8 @@ export const discoSchema = z.object({
     .max(250, "La descripción no puede superar los 250 caracteres.")
     .optional(),
 
+  portada: z.string().min(1, "Debe seleccionar una portada."),
+
   precio: z
     .number({
       invalid_type_error: "El precio debe ser un número.",
