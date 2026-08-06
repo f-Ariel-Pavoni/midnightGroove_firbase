@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { readFile } from "fs/promises";
-import { db } from "./firebaseConfig.js";
+import { db, auth } from "./firebaseConfig.js";
 import {
   collection,
   getDocs,
@@ -9,11 +9,16 @@ import {
   doc,
 } from "firebase/firestore";
 
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+
+import { createInterface } from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
+
 //levanta los argumentos de ejecucion por consola -> node tools/importarDiscos.js --reset
 const reset = process.argv.includes("--reset");
 
-const contenido = await readFile("./public/data/discos.json", "utf8");
-const discos = JSON.parse(contenido);
+//creo una interfase para obtener datos desde teclado
+const rl = createInterface({ input, output });
 
 const borrarDiscos = async () => {
   const snapshot = await getDocs(collection(db, "discos"));
@@ -30,20 +35,36 @@ const cargarDiscos = async (discosCargar) => {
   }
 };
 
-console.log("Firebase conectado:", db ? "OK" : "ERROR");
-console.log(`Modo Reset: ${reset}`);
+try {
+  const usr = await rl.question("Usuario: ");
+  const pass = await rl.question("Password: ");
 
-// si el modo es reset borra la colleccion
-// otro caso agrega sin repetir ids (del dato)
+  await signInWithEmailAndPassword(auth, usr, pass);
+  console.log("Autenticado correctamente");
 
-if (reset) {
-  await borrarDiscos();
-  await cargarDiscos(discos);
-} else {
-  const snapshot = await getDocs(collection(db, "discos"));
-  const idsExistentes = snapshot.docs.map((doc) => doc.data().id);
-  const discosNuevos = discos.filter(
-    (disco) => !idsExistentes.includes(disco.id),
-  );
-  await cargarDiscos(discosNuevos);
+  const contenido = await readFile("./public/data/discos.json", "utf8");
+  const discos = JSON.parse(contenido);
+
+  console.log(`Modo Reset: ${reset}`);
+
+  // si el modo es reset borra la colleccion
+  // otro caso agrega sin repetir ids (del dato)
+
+  if (reset) {
+    await borrarDiscos();
+    await cargarDiscos(discos);
+  } else {
+    const snapshot = await getDocs(collection(db, "discos"));
+    const idsExistentes = snapshot.docs.map((doc) => doc.data().id);
+    const discosNuevos = discos.filter(
+      (disco) => !idsExistentes.includes(disco.id),
+    );
+    await cargarDiscos(discosNuevos);
+  }
+} catch (error) {
+  console.log("ERROR: ", error.message);
+} finally {
+  rl.close();
+  await signOut(auth);
+  console.log("Conexión terminada");
 }
