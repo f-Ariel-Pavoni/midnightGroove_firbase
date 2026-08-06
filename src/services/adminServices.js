@@ -11,6 +11,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 
+import { registrarAuditoria } from "./auditService";
+
 // Obtener discos con todos los estados
 
 export const getDiscosAdmin = async () => {
@@ -45,21 +47,61 @@ export const toggleEstadoDisco = async (firebaseId) => {
 
 // Elimina fisicamente un disco
 export const eliminarDisco = async (firebaseId) => {
-  const discoRef = doc(db, "discos", firebaseId);
-  await deleteDoc(discoRef);
+  let auditoria = {
+    accion: "DELETE",
+    coleccion: "discos",
+    estado: "ERROR",
+    documentoId: firebaseId,
+  };
+  try {
+    const discoRef = doc(db, "discos", firebaseId);
+    await deleteDoc(discoRef);
+    auditoria = {
+      ...auditoria,
+      estado: "SUCCESS",
+    };
+  } catch (error) {
+    auditoria.error = error.message;
+    throw error;
+  } finally {
+    await registrarAuditoria(auditoria);
+  }
 };
 
 export const agregarDisco = async (disco) => {
-  const snapshot = await getDocs(collection(db, "discos"));
-  const ids = snapshot.docs.map((doc) => doc.data().id);
-  const nuevoId = Math.max(...ids, 0) + 1;
-  const ref = await addDoc(collection(db, "discos"), {
-    ...disco,
-    id: nuevoId,
-    activo: true,
-    tracklist: disco.tracklist ?? [],
-  });
-  console.log(`El disco ${disco.titulo} fue subido con referencia ${ref.id}`);
+  let auditoria = {
+    accion: "CREATE",
+    coleccion: "discos",
+    estado: "ERROR",
+  };
+
+  try {
+    const snapshot = await getDocs(collection(db, "discos"));
+    const ids = snapshot.docs.map((doc) => doc.data().id);
+    const nuevoId = Math.max(...ids, 0) + 1;
+
+    const nuevoDisco = {
+      ...disco,
+      id: nuevoId,
+      activo: true,
+      tracklist: disco.tracklist ?? [],
+    };
+
+    const ref = await addDoc(collection(db, "discos"), nuevoDisco);
+    console.log(`El disco ${disco.titulo} fue subido con referencia ${ref.id}`);
+
+    auditoria = {
+      ...auditoria,
+      estado: "SUCCESS",
+      documentoId: ref.id,
+      datos: nuevoDisco,
+    };
+  } catch (error) {
+    auditoria.error = error.message;
+    throw error;
+  } finally {
+    await registrarAuditoria(auditoria);
+  }
 };
 
 // Portadas

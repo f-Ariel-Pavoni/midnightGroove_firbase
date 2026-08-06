@@ -150,7 +150,7 @@ const FormularioDisco = ({ onClose, crearDisco }) => {
         {/*Portada*/}
         <div className="mb-3">
           <label htmlFor="portada" className="form-label">
-            Portada
+            Portada <span className="text-danger">*</span>
           </label>
 
           <select id="portada" className="form-select" {...register("portada")}>
