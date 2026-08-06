@@ -36,25 +36,21 @@ El acceso al Dashboard administrativo fue protegido mediante rutas privadas, ver
 
 ```javascript
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
     match /discos/{documentId} {
       allow read: if true;
       allow write: if request.auth != null;
     }
-
     match /portadas/{documentId} {
       allow read: if true;
       allow write: if request.auth != null;
     }
-
     match /audit/{documentId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null;
-    }
 
+    }
   }
 }
 ```
