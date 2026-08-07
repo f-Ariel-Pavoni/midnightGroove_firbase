@@ -401,3 +401,9 @@ http://localhost:5173/
 **Ariel Pavoni**
 
 Proyecto desarrollado como trabajo práctico para la **Diplomatura Full Stack - UTN Learning**.
+
+---
+
+## Bibliografia:
+
+- Firebase: https://firebase.google.com/docs?hl=es-419
