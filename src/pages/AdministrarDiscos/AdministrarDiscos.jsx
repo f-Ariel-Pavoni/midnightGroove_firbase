@@ -24,8 +24,20 @@ const AdministrarDiscos = () => {
   const [accion, setAccion] = useState(null);
   const [mensajeAccion, setMensajeAccion] = useState(null);
   const [mensajeAccionBtn, setMensajeAccionBtn] = useState(null);
-
+  const [ctaActivo, setCtaActivo] = useState(true);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
+  const handleCrearDisco = async (disco) => {
+    if (!ctaActivo) return;
+    setCtaActivo(false);
+
+    try {
+      await crearDisco(disco);
+      setMostrarFormulario(false);
+    } finally {
+      setCtaActivo(true);
+    }
+  };
 
   const discosFiltrados = useMemo(() => {
     if (!busqueda) return discos;
@@ -121,7 +133,8 @@ const AdministrarDiscos = () => {
         <Modal onClose={() => setMostrarFormulario(false)} titulo="Nuevo disco">
           <FormularioDisco
             onClose={() => setMostrarFormulario(false)}
-            crearDisco={crearDisco}
+            onSubmit={handleCrearDisco}
+            ctaActivo={ctaActivo}
           />
         </Modal>
       )}
