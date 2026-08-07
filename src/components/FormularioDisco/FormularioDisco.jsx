@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { discoSchema as schema } from "../../schemas/discoSchema";
 import usePortadas from "../../hooks/usePortadas";
 
-const FormularioDisco = ({ onClose, crearDisco }) => {
+const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
   const {
     register,
     handleSubmit,
@@ -14,7 +14,7 @@ const FormularioDisco = ({ onClose, crearDisco }) => {
   const { portadas, loading } = usePortadas();
 
   const handleCrear = async (data) => {
-    await crearDisco(data);
+    await onSubmit(data);
     console.log(data);
     reset();
     onClose();
@@ -200,7 +200,11 @@ const FormularioDisco = ({ onClose, crearDisco }) => {
           <button type="button" className="btn btn-secondary" onClick={onClose}>
             Cancelar
           </button>
-          <button type="submit" className="btn btn btn-dark">
+          <button
+            type="submit"
+            className="btn btn btn-dark"
+            disabled={!ctaActivo}
+          >
             Agregar
           </button>
         </div>
