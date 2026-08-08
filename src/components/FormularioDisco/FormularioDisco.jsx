@@ -1,15 +1,20 @@
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { discoSchema as schema } from "../../schemas/discoSchema";
 import usePortadas from "../../hooks/usePortadas";
+import FormularioTracklist from "../FormularioTracklist/FormularioTracklist";
 
 const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
+  const methods = useForm({
+    resolver: zodResolver(schema),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({ resolver: zodResolver(schema) });
+  } = methods;
 
   const { portadas, loading } = usePortadas();
 
@@ -21,7 +26,7 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
   };
 
   return (
-    <>
+    <FormProvider {...methods}>
       <form onSubmit={handleSubmit(handleCrear)} noValidate>
         {/*Titulo disco*/}
         <div className="mb-3">
@@ -174,6 +179,9 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
           )}
         </div>
 
+        {/*Lista de temas*/}
+        <FormularioTracklist />
+
         {/*Precio*/}
         <div className="mb-3">
           <label htmlFor="precio" className="form-label">
@@ -209,7 +217,7 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
           </button>
         </div>
       </form>
-    </>
+    </FormProvider>
   );
 };
 
