@@ -84,7 +84,11 @@ export const agregarDisco = async (disco) => {
       ...disco,
       id: nuevoId,
       activo: true,
-      tracklist: disco.tracklist ?? [],
+      tracklist:
+        disco.tracklist.map((tema, index) => ({
+          numero: index + 1,
+          titulo: tema.titulo,
+        })) ?? [],
     };
 
     const ref = await addDoc(collection(db, "discos"), nuevoDisco);

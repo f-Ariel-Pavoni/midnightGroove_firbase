@@ -2,7 +2,7 @@ MidnightGroove
 
 ## Descripción
 
-**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. Este proyecto es la evolución de la tarea de enrutamiento. Actualmente comprende todos los temas tratados en la cursada, los mismos se detallan en este documento. 
+**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. Este proyecto es la evolución de la tarea de enrutamiento. Actualmente comprende todos los temas tratados en la cursada, los mismos se detallan en este documento.
 
 ### Para las tareas 1 y 2 del módulo 3 (Integración con Firebase)
 
@@ -63,7 +63,7 @@ Podés ver la aplicación funcionando en Netlify:
 
 [midnightGroove](https://midnightgroove.netlify.app/)
 
-Podes acceder a la sección privada cone estos datos: 
+Podes acceder a la sección privada cone estos datos:
 
 - usuario: testuser2@mail.com
 - password: qwerty
@@ -254,7 +254,6 @@ La gestión del CRUD se encuentra organizada mediante:
   - Hook personalizado que centraliza la lógica del panel administrativo.
   - Maneja carga de datos, estados de loading, errores y acciones CRUD.
 
-
 ## Tools
 
 El proyecto incluye herramientas auxiliares para administrar la carga inicial de datos en Firestore.
@@ -317,7 +316,7 @@ La aplicación implementa distintas funcionalidades de React Router:
 - Rutas públicas.
 - Rutas dinámicas mediante `useParams`.
 - Parámetros de búsqueda con `useSearchParams`.
-- Rutas protegidas mediante Firebase Authentication. El acceso al **Dashboard** se encuentra protegido. Si un usuario intenta acceder sin haberse autenticado, es redirigido automáticamente a la pantalla de **Login** y se muestra un modal con el mensaje, conservando la ruta de origen mediante `useLocation`. 
+- Rutas protegidas mediante Firebase Authentication. El acceso al **Dashboard** se encuentra protegido. Si un usuario intenta acceder sin haberse autenticado, es redirigido automáticamente a la pantalla de **Login** y se muestra un modal con el mensaje, conservando la ruta de origen mediante `useLocation`.
 - Ruta para páginas inexistentes (404). Cuando se accede a un id de disco inexiste se muestra un not found.
 - Layout compartido utilizando rutas anidadas y `<Outlet />`.
 
@@ -406,4 +405,6 @@ Proyecto desarrollado como trabajo práctico para la **Diplomatura Full Stack - 
 
 ## Bibliografia:
 
+- React Hook Form: https://react-hook-form.com/
+- Zod: https://zod.dev/
 - Firebase: https://firebase.google.com/docs?hl=es-419

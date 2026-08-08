@@ -50,6 +50,11 @@ export const discoSchema = z.object({
 
   portada: z.string().min(1, "Debe seleccionar una portada."),
 
+  tracklist: z.array(
+    z.object({
+      titulo: z.string().min(1, "El título es obligatorio"),
+    }),
+  ),
   precio: z
     .number({
       invalid_type_error: "El precio debe ser un número.",
