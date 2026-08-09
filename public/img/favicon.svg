@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Fondo degrade nocturno -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D111D"/>
+      <stop offset="100%" stop-color="#05070A"/>
+    </linearGradient>
+
+    <!-- Degrade dorado Jazz para la etiqueta -->
+    <linearGradient id="jazzGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+
+    <!-- Brillo reflectante del vinilo -->
+    <linearGradient id="vinylSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Contenedor Base redondeado -->
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad)"/>
+
+  <!-- Luna de fondo (Concepto Midnight) -->
+  <path d="M 370 100 A 170 170 0 0 1 420 320 A 145 145 0 1 0 310 110 A 165 165 0 0 1 370 100 Z" fill="#F59E0B" opacity="0.2"/>
+
+  <!-- Disco de Vinilo -->
+  <circle cx="256" cy="256" r="185" fill="#161A23"/>
+
+  <!-- Surcos del Vinilo -->
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#282E3D" stroke-width="3"/>
+  <circle cx="256" cy="256" r="135" fill="none" stroke="#282E3D" stroke-width="3"/>
+  <circle cx="256" cy="256" r="110" fill="none" stroke="#282E3D" stroke-width="3"/>
+
+  <!-- Reflejo de Luz sobre el Vinilo -->
+  <path d="M 125 125 L 256 256 L 125 387 A 185 185 0 0 1 125 125 Z" fill="url(#vinylSheen)"/>
+  <path d="M 387 125 L 256 256 L 387 387 A 185 185 0 0 0 387 125 Z" fill="url(#vinylSheen)"/>
+
+  <!-- Etiqueta Central (Jazz Gold) -->
+  <circle cx="256" cy="256" r="70" fill="url(#jazzGold)"/>
+  <circle cx="256" cy="256" r="63" fill="none" stroke="#FFFBEB" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Nota Musical Integrada -->
+  <circle cx="236" cy="270" r="14" fill="#0D111D"/>
+  <rect x="244" y="222" width="6" height="48" rx="3" fill="#0D111D"/>
+  <path d="M 250 222 C 270 226, 280 240, 276 254 C 270 242, 260 234, 250 232 Z" fill="#0D111D"/>
+
+  <!-- Agujero Central del Vinilo -->
+  <circle cx="256" cy="256" r="10" fill="#0D111D"/>
+  <circle cx="256" cy="256" r="10" fill="none" stroke="#F59E0B" stroke-width="2"/>
+
+  <!-- Destellos Nocturnos -->
+  <path d="M 395 115 Q 395 130 410 130 Q 395 130 395 145 Q 395 130 380 130 Q 395 130 395 115 Z" fill="#FDE68A"/>
+  <path d="M 115 375 Q 115 387 127 387 Q 115 387 115 399 Q 115 387 103 387 Q 115 387 115 375 Z" fill="#FDE68A" opacity="0.7"/>
+</svg>
