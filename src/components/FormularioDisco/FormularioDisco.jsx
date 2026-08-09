@@ -1,10 +1,11 @@
 import { useForm, FormProvider } from "react-hook-form";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { discoSchema as schema } from "../../schemas/discoSchema";
 import usePortadas from "../../hooks/usePortadas";
 import FormularioTracklist from "../FormularioTracklist/FormularioTracklist";
 
-const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
+const FormularioDisco = ({ onClose, onSubmit, ctaActivo, disco }) => {
   const methods = useForm({
     resolver: zodResolver(schema),
   });
@@ -18,12 +19,31 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
 
   const { portadas, loading } = usePortadas();
 
+  const esEdicion = Boolean(disco);
+  console.log("disco recibido:", disco);
+
   const handleCrear = async (data) => {
     await onSubmit(data);
     console.log(data);
     reset();
     onClose();
   };
+
+  useEffect(() => {
+    if (disco) {
+      reset({
+        titulo: disco.titulo,
+        artista: disco.artista,
+        anio: disco.anio,
+        genero: disco.genero,
+        sello: disco.sello,
+        descripcion: disco.descripcion,
+        portada: disco.portada,
+        precio: disco.precio,
+        tracklist: disco.tracklist,
+      });
+    }
+  }, [disco, reset]);
 
   return (
     <FormProvider {...methods}>
@@ -138,9 +158,8 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
             Descripción
           </label>
 
-          <input
+          <textarea
             id="descripcion"
-            type="textarea"
             className="form-control"
             placeholder="Descripción..."
             {...register("descripcion")}
@@ -208,13 +227,20 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo }) => {
           <button type="button" className="btn btn-secondary" onClick={onClose}>
             Cancelar
           </button>
-          <button
-            type="submit"
-            className="btn btn btn-dark"
-            disabled={!ctaActivo}
-          >
-            Agregar
-          </button>
+
+          {esEdicion ? (
+            <button type="button" className="btn btn-dark" disabled>
+              Guardar cambios
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="btn btn-dark"
+              disabled={!ctaActivo}
+            >
+              Agregar
+            </button>
+          )}
         </div>
       </form>
     </FormProvider>

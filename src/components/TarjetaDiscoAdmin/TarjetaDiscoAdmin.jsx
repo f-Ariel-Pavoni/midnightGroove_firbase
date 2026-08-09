@@ -24,7 +24,7 @@ const TarjetaDiscoAdmin = ({
             aria-label="Editar disco"
             title="Editar disco"
             className="btn btn-success"
-            onClick={() => editarDisco(firebaseId)}
+            onClick={() => editarDisco(disco)}
           >
             <FaEdit />
           </button>
