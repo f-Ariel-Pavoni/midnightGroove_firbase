@@ -26,6 +26,7 @@ const AdministrarDiscos = () => {
   const [mensajeAccionBtn, setMensajeAccionBtn] = useState(null);
   const [ctaActivo, setCtaActivo] = useState(true);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [discoEditar, setDiscoEditar] = useState(null);
 
   const handleCrearDisco = async (disco) => {
     if (!ctaActivo) return;
@@ -47,8 +48,10 @@ const AdministrarDiscos = () => {
     );
   }, [discos, busqueda]);
 
-  const editarDisco = () => {
+  const editarDisco = (disco) => {
     console.log("editar disco");
+    setDiscoEditar(disco);
+    setMostrarFormulario(true);
   };
 
   const cambiarEstado = (disco) => {
@@ -76,6 +79,7 @@ const AdministrarDiscos = () => {
   };
 
   const handleNuevoDisco = () => {
+    setDiscoEditar(null);
     setMostrarFormulario(true);
     console.log("Vas a agregar un disco");
   };
@@ -130,8 +134,12 @@ const AdministrarDiscos = () => {
         />
       )}
       {mostrarFormulario && (
-        <Modal onClose={() => setMostrarFormulario(false)} titulo="Nuevo disco">
+        <Modal
+          onClose={() => setMostrarFormulario(false)}
+          titulo={discoEditar ? "Editar disco" : "Nuevo disco"}
+        >
           <FormularioDisco
+            disco={discoEditar}
             onClose={() => setMostrarFormulario(false)}
             onSubmit={handleCrearDisco}
             ctaActivo={ctaActivo}
