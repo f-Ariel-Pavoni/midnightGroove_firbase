@@ -375,7 +375,7 @@ http://localhost:5173/
 
 ### Página de inicio
 
-![Página de inicio](./src/assets/img/pagina_inicio.png)
+![Página de inicio](./src/assets/img/inicio.png)
 
 ### Detalle de un disco
 
@@ -387,11 +387,11 @@ http://localhost:5173/
 
 ### Dashboard protegido
 
-![Dashboard protegido](./src/assets/img/pagina_protegida.png)
+![Dashboard protegido](./src/assets/img/dashboard.png)
 
 ### Dashboard accesible
 
-![Dashboard accesible](./src/assets/img/pagina_protegida_autenticado.png)
+![Dashboard protegido Discos](./src/assets/img/administracion_discos.png)
 
 ---
 

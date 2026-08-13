@@ -5,6 +5,7 @@ import {
   toggleEstadoDisco,
   eliminarDisco,
   agregarDisco,
+  actualizarDisco,
 } from "../services/adminServices";
 
 const useDiscosAdmin = () => {
@@ -48,6 +49,17 @@ const useDiscosAdmin = () => {
     }
   };
 
+  const actualizar = async (firebaseId, disco) => {
+    setError(null);
+    try {
+      await actualizarDisco(firebaseId, disco);
+      await cargarDiscos();
+    } catch (error) {
+      console.error("ERROR ACTUALIZANDO DISCO:", error);
+      setError(error);
+    }
+  };
+
   const eliminar = async (firebaseId) => {
     setError(null);
     try {
@@ -81,6 +93,7 @@ const useDiscosAdmin = () => {
     crearDisco,
     desactivar,
     eliminar,
+    actualizar,
     toggleEstado,
   };
 };

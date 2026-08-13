@@ -228,19 +228,9 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo, disco }) => {
             Cancelar
           </button>
 
-          {esEdicion ? (
-            <button type="button" className="btn btn-dark" disabled>
-              Guardar cambios
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="btn btn-dark"
-              disabled={!ctaActivo}
-            >
-              Agregar
-            </button>
-          )}
+          <button type="submit" className="btn btn-dark" disabled={!ctaActivo}>
+            {esEdicion ? "Guardar cambios" : "Agregar"}
+          </button>
         </div>
       </form>
     </FormProvider>

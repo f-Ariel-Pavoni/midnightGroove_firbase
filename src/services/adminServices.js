@@ -45,6 +45,13 @@ export const toggleEstadoDisco = async (firebaseId) => {
   await updateDoc(discoRef, { activo: nuevoEstado });
 };
 
+// Actualizar disco
+export const actualizarDisco = async (firebaseId, disco) => {
+  const discoRef = doc(db, "discos", firebaseId);
+
+  await updateDoc(discoRef, disco);
+};
+
 // Elimina fisicamente un disco
 export const eliminarDisco = async (firebaseId) => {
   let auditoria = {
