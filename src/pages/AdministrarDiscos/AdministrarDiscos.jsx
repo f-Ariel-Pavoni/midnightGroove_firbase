@@ -16,6 +16,7 @@ const AdministrarDiscos = () => {
     error,
     desactivar,
     toggleEstado,
+    actualizar,
     crearDisco,
     eliminar,
   } = useDiscosAdmin();
@@ -28,13 +29,19 @@ const AdministrarDiscos = () => {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [discoEditar, setDiscoEditar] = useState(null);
 
-  const handleCrearDisco = async (disco) => {
+  const handleGuardarDisco = async (disco) => {
     if (!ctaActivo) return;
     setCtaActivo(false);
 
     try {
-      await crearDisco(disco);
+      if (discoEditar) {
+        await actualizar(discoEditar.firebaseId, disco);
+      } else {
+        await crearDisco(disco);
+      }
+
       setMostrarFormulario(false);
+      setDiscoEditar(null);
     } finally {
       setCtaActivo(true);
     }
@@ -141,7 +148,7 @@ const AdministrarDiscos = () => {
           <FormularioDisco
             disco={discoEditar}
             onClose={() => setMostrarFormulario(false)}
-            onSubmit={handleCrearDisco}
+            onSubmit={handleGuardarDisco}
             ctaActivo={ctaActivo}
           />
         </Modal>
