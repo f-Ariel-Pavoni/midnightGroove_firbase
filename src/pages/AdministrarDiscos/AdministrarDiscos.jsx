@@ -7,6 +7,7 @@ import TarjetaDiscoAdmin from "../../components/TarjetaDiscoAdmin/TarjetaDiscoAd
 import FormularioDisco from "../../components/FormularioDisco/FormularioDisco";
 import useDiscosAdmin from "../../hooks/useDiscosAdmin";
 import Encabezado from "../../components/Encabezado/Encabezado";
+import EncabezadoDiscosAmin from "../../components/EncabezadoDiscosAdmin/EncabezadoDiscosAdmin";
 
 const AdministrarDiscos = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -17,6 +18,7 @@ const AdministrarDiscos = () => {
     desactivar,
     toggleEstado,
     actualizar,
+    actualizarPrecio,
     crearDisco,
     eliminar,
   } = useDiscosAdmin();
@@ -28,6 +30,8 @@ const AdministrarDiscos = () => {
   const [ctaActivo, setCtaActivo] = useState(true);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [discoEditar, setDiscoEditar] = useState(null);
+  const [discoEditarPrecio, setDiscoEditarPrecio] = useState(null);
+  const [nuevoPrecio, setNuevoPrecio] = useState("");
 
   const handleGuardarDisco = async (disco) => {
     if (!ctaActivo) return;
@@ -59,6 +63,14 @@ const AdministrarDiscos = () => {
     console.log("editar disco");
     setDiscoEditar(disco);
     setMostrarFormulario(true);
+  };
+
+  const editarPrecio = (disco) => {
+    console.log("editar precio");
+    console.log("PRECIO:", disco.precio);
+    setNuevoPrecio(disco.precio);
+    setDiscoEditarPrecio(disco);
+    // acá cambiamos el estado necesario para mostrar el input
   };
 
   const cambiarEstado = (disco) => {
@@ -119,6 +131,7 @@ const AdministrarDiscos = () => {
           />
         </div>
       </div>
+      <EncabezadoDiscosAmin />
       <ListaDiscos
         discos={discosFiltrados}
         layout="list"
@@ -128,6 +141,7 @@ const AdministrarDiscos = () => {
             editarDisco={editarDisco}
             cambiarEstado={cambiarEstado}
             eliminarDisco={eliminarDisco}
+            actualizarPrecio={editarPrecio}
           />
         )}
       />
@@ -151,6 +165,22 @@ const AdministrarDiscos = () => {
             onSubmit={handleGuardarDisco}
             ctaActivo={ctaActivo}
           />
+        </Modal>
+      )}
+      {discoEditarPrecio && (
+        <Modal
+          onClose={() => setDiscoEditarPrecio(null)}
+          titulo={"Editar precio"}
+        >
+          <div className="mb-3">
+            <p>Precio actual: {discoEditarPrecio.precio}</p>
+            <label className="form-label">Precio</label>
+            <input
+              type="number"
+              className="form-control"
+              defaultValue={discoEditarPrecio.precio}
+            />
+          </div>
         </Modal>
       )}
     </>

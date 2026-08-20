@@ -6,6 +6,7 @@ import {
   eliminarDisco,
   agregarDisco,
   actualizarDisco,
+  actualizarPrecioConMerge,
 } from "../services/adminServices";
 
 const useDiscosAdmin = () => {
@@ -60,6 +61,17 @@ const useDiscosAdmin = () => {
     }
   };
 
+  const actualizarPrecio = async (firebaseId, precio) => {
+    setError(null);
+    try {
+      await actualizarPrecioConMerge(firebaseId, precio);
+      await cargarDiscos();
+    } catch (error) {
+      console.error("ERROR ACTUALIZANDO PRECIO:", error);
+      setError(error);
+    }
+  };
+
   const eliminar = async (firebaseId) => {
     setError(null);
     try {
@@ -94,6 +106,7 @@ const useDiscosAdmin = () => {
     desactivar,
     eliminar,
     actualizar,
+    actualizarPrecio,
     toggleEstado,
   };
 };
