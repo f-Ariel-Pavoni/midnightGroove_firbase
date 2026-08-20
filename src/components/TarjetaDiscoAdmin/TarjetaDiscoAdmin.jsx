@@ -1,25 +1,49 @@
-import { FaEdit, FaTrash, FaPowerOff, FaCheckCircle } from "react-icons/fa";
+import {
+  FaEdit,
+  FaTrash,
+  FaPowerOff,
+  FaCheckCircle,
+  FaPen,
+} from "react-icons/fa";
 
 const TarjetaDiscoAdmin = ({
   disco,
   cambiarEstado,
   editarDisco,
   eliminarDisco,
+  actualizarPrecio,
 }) => {
-  const { firebaseId, titulo, artista, genero, activo } = disco;
+  const { firebaseId, titulo, artista, genero, precio, activo } = disco;
 
   return (
     <div className="card-body">
       <div className="row align-items-center">
-        <div className="col-md-2">{titulo}</div>
+        {/* Datos del disco */}
+        <div className="col-md-9">
+          <div className="row align-items-center">
+            <div className="col-md-3">{titulo}</div>
+            <div className="col-md-3">{artista}</div>
+            <div className="col-md-2">{genero}</div>
 
-        <div className="col-md-2">{artista}</div>
+            <div className="col-md-2 d-flex align-items-center justify-content-end gap-2">
+              <span>{precio}</span>
+              <button
+                type="button"
+                aria-label="Editar precio"
+                title="Editar precio"
+                className="btn btn-sm btn-link p-0"
+                onClick={() => actualizarPrecio(disco)}
+              >
+                <FaPen />
+              </button>
+            </div>
 
-        <div className="col-md-2">{genero}</div>
+            <div className="col-md-2">{activo ? "Activo" : "Inactivo"}</div>
+          </div>
+        </div>
 
-        <div className="col-md-2">{activo ? "Activo" : "Inactivo"} </div>
-
-        <div className="col-md-4 d-flex gap-2 justify-content-end">
+        {/* Acciones */}
+        <div className="col-md-3 d-flex gap-2 justify-content-end">
           <button
             aria-label="Editar disco"
             title="Editar disco"

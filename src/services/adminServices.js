@@ -8,6 +8,7 @@ import {
   doc,
   deleteDoc,
   addDoc,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 
@@ -106,6 +107,30 @@ export const agregarDisco = async (disco) => {
       estado: "SUCCESS",
       documentoId: ref.id,
       datos: nuevoDisco,
+    };
+  } catch (error) {
+    auditoria.error = error.message;
+    throw error;
+  } finally {
+    await registrarAuditoria(auditoria);
+  }
+};
+
+export const actualizarPrecioConMerge = async (firebaseId, precio) => {
+  let auditoria = {
+    accion: "UPDATE PRECIO",
+    coleccion: "discos",
+    documentoId: firebaseId,
+    estado: "ERROR",
+  };
+  try {
+    const discoRef = doc(db, "discos", firebaseId);
+    await setDoc(discoRef, { precio }, { merge: true });
+
+    auditoria = {
+      ...auditoria,
+      estado: "SUCCESS",
+      datos: { precio },
     };
   } catch (error) {
     auditoria.error = error.message;
