@@ -254,7 +254,8 @@ Al utilizar:
 
 ````js
 await setDoc(discoRef, { precio }, { merge: true });
-```
+````
+---
 
 ### Servicios y hooks relacionados
 
