@@ -248,11 +248,13 @@ La actualización se realiza mediante:
 - `actualizarPrecio()` en `useDiscosAdmin.js`.
 - `editarPrecio()` y `confirmarPrecio()` en `AdministrarDiscos`.
 - `EditorPrecio` como componente encargado de la edición del precio.
+  
 
 Al utilizar:
 
 ````js
 await setDoc(discoRef, { precio }, { merge: true });
+```
 
 ### Servicios y hooks relacionados
 
