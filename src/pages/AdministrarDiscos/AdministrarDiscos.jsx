@@ -8,6 +8,7 @@ import FormularioDisco from "../../components/FormularioDisco/FormularioDisco";
 import useDiscosAdmin from "../../hooks/useDiscosAdmin";
 import Encabezado from "../../components/Encabezado/Encabezado";
 import EncabezadoDiscosAmin from "../../components/EncabezadoDiscosAdmin/EncabezadoDiscosAdmin";
+import EditorPrecio from "../../components/EditorPrecio/EditorPrecio";
 
 const AdministrarDiscos = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -71,6 +72,12 @@ const AdministrarDiscos = () => {
     setNuevoPrecio(disco.precio);
     setDiscoEditarPrecio(disco);
     // acá cambiamos el estado necesario para mostrar el input
+  };
+
+  const confirmarPrecio = async (firebaseId, nuevoPrecio) => {
+    console.log("Nuevo precio:", nuevoPrecio);
+    await actualizarPrecio(firebaseId, nuevoPrecio);
+    setDiscoEditarPrecio(null);
   };
 
   const cambiarEstado = (disco) => {
@@ -172,15 +179,11 @@ const AdministrarDiscos = () => {
           onClose={() => setDiscoEditarPrecio(null)}
           titulo={"Editar precio"}
         >
-          <div className="mb-3">
-            <p>Precio actual: {discoEditarPrecio.precio}</p>
-            <label className="form-label">Precio</label>
-            <input
-              type="number"
-              className="form-control"
-              defaultValue={discoEditarPrecio.precio}
-            />
-          </div>
+          <EditorPrecio
+            disco={discoEditarPrecio}
+            accion={confirmarPrecio}
+            onClose={() => setDiscoEditarPrecio(null)}
+          />
         </Modal>
       )}
     </>

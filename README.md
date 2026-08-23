@@ -238,6 +238,22 @@ Además, la aplicación utiliza el campo booleano `activo` como mecanismo de con
 
 Esta combinación permite diferenciar entre eliminación física y desactivación lógica, brindando mayor flexibilidad en la administración del catálogo.
 
+### Actualización de precio
+
+Se implementó la actualización independiente del precio de un disco utilizando `setDoc` con la opción `merge`.
+
+La actualización se realiza mediante:
+
+- `actualizarPrecioConMerge()` en `discoService.js`.
+- `actualizarPrecio()` en `useDiscosAdmin.js`.
+- `editarPrecio()` y `confirmarPrecio()` en `AdministrarDiscos`.
+- `EditorPrecio` como componente encargado de la edición del precio.
+
+Al utilizar:
+
+````js
+await setDoc(discoRef, { precio }, { merge: true });
+
 ### Servicios y hooks relacionados
 
 La gestión del CRUD se encuentra organizada mediante:
@@ -264,7 +280,7 @@ La herramienta `tools/importarDiscos.js` permite cargar los datos del catálogo 
 
 ```text
 public/data/discos.json
-```
+````
 
 Los datos son procesados mediante Node.js y enviados a la colección `discos` de Firestore.
 
