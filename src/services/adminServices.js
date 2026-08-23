@@ -9,10 +9,22 @@ import {
   deleteDoc,
   addDoc,
   setDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
-
 import { registrarAuditoria } from "./auditService";
+const discosRef = collection(db, "discos");
+
+// Escuchar discos con todos los estados
+export const escucharDiscosAdmin = (callback) => {
+  return onSnapshot(discosRef, (snapshot) => {
+    const discos = snapshot.docs.map((doc) => ({
+      firebaseId: doc.id,
+      ...doc.data(),
+    }));
+    callback(discos);
+  });
+};
 
 // Obtener discos con todos los estados
 

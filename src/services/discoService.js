@@ -1,7 +1,32 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
 
 const discosRef = collection(db, "discos");
+
+// Escucha los cambios en la coleccion de discos
+export const escucharDiscos = (callback) => {
+  const qry = query(discosRef, where("activo", "==", true));
+
+  return onSnapshot(
+    qry,
+    (snapshot) => {
+      const discos = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+      }));
+
+      callback(discos);
+    },
+    (error) => {
+      console.error("ERROR FIREBASE:", error);
+    },
+  );
+};
 
 // Trae todos los discos que estan activos
 export const getDiscos = async () => {

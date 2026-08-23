@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getDiscos } from "../services/discoService";
+
+import { escucharDiscos } from "../services/discoService";
 
 const useDiscos = () => {
   const [discos, setDiscos] = useState([]);
@@ -7,18 +8,12 @@ const useDiscos = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const cargarDiscos = async () => {
-      try {
-        const data = await getDiscos();
-        setDiscos(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const cancelar = escucharDiscos((data) => {
+      setDiscos(data);
+      setLoading(false);
+    });
 
-    cargarDiscos();
+    return cancelar;
   }, []);
 
   return {
