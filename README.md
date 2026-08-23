@@ -17,6 +17,7 @@ La comunicación con Firestore fue encapsulada dentro de la carpeta `services/`,
 - `collection()` para obtener referencias a las colecciones de Firestore.
 - `getDocs()` para recuperar múltiples documentos.
 - `query()` y `where()` para realizar consultas filtradas.
+- `onSnapshot()` para establecer escuchas en tiempo real sobre consultas de Firestore.
 - `doc()` para trabajar con documentos específicos.
 - `addDoc()` para crear nuevos registros.
 - `updateDoc()` para modificar información existente.
@@ -97,7 +98,7 @@ Podes acceder a la sección privada cone estos datos:
   - Obtención del identificador del disco desde la URL para mostrar la información detallada de cada disco.
 
 - **useEffect**
-  - Utilizado para ejecutar cargas asíncronas de datos al montar componentes, como la obtención del catálogo y el detalle de cada disco mediante servicios.
+  - Utilizado para ejecutar efectos secundarios relacionados con la obtención y sincronización de datos. En los hooks `useDiscos` y `useDiscosAdmin` se utiliza para establecer una suscripción mediante `onSnapshot()` al montar el componente y cancelar dicha suscripción al desmontarlo.
 
 - **useSearchParams**
   - Administración del filtro por género mediante parámetros de consulta en la URL, permitiendo compartir enlaces y conservar el estado del filtro al recargar la página.
@@ -159,6 +160,8 @@ Actualmente se implementan servicios como:
 - `getDiscos()`
 - `getDiscoById()`
 - `getGeneros()`
+- `escucharDiscos()`
+- `escucharDiscosAdmin()`
 - authService.js para autenticación mediante Firebase Authentication
 - servicios administrativos para operaciones CRUD
 
@@ -211,14 +214,19 @@ Una vez validado el formulario, el servicio correspondiente utiliza el método `
 
 La lectura de información se realiza mediante consultas a Cloud Firestore utilizando los métodos `getDocs()`, `query()` y `where()`.
 
+Además, para las listas de discos se implementó `onSnapshot()`, permitiendo establecer una escucha en tiempo real sobre las consultas de Firestore. De esta manera, cuando se produce un cambio en los documentos observados, Firestore notifica automáticamente a la aplicación y el estado de React se actualiza sin necesidad de volver a realizar manualmente la consulta.
+
 La aplicación implementa diferentes lecturas según el contexto:
 
 - Obtención del catálogo público de discos.
+- Escucha en tiempo real del catálogo público mediante `escucharDiscos()`.
 - Consulta del detalle de un disco mediante su identificador.
 - Obtención dinámica de géneros disponibles para los filtros.
-- Carga de datos para el panel administrativo.
+- Carga y escucha en tiempo real de los datos del panel administrativo mediante `escucharDiscosAdmin()`.
 
-La información recuperada desde Firestore es gestionada mediante hooks personalizados, separando la lógica de carga, estados de espera y manejo de errores de los componentes de presentación.
+Las funciones de escucha devuelven la función de cancelación proporcionada por `onSnapshot()`. Los hooks utilizan esta función al desmontarse para cancelar la suscripción y evitar mantener escuchas activas cuando el componente ya no está en uso.
+
+La información recuperada desde Firestore es gestionada mediante hooks personalizados, separando la lógica de acceso a datos, estados de espera, errores y suscripciones de los componentes de presentación.
 
 ### Update (Actualizar)
 
@@ -244,17 +252,17 @@ Se implementó la actualización independiente del precio de un disco utilizando
 
 La actualización se realiza mediante:
 
-- `actualizarPrecioConMerge()` en `discoService.js`.
+- `actualizarPrecioConMerge()` en `adminServices.js`.
 - `actualizarPrecio()` en `useDiscosAdmin.js`.
 - `editarPrecio()` y `confirmarPrecio()` en `AdministrarDiscos`.
 - `EditorPrecio` como componente encargado de la edición del precio.
-  
 
 Al utilizar:
 
-````js
+```js
 await setDoc(discoRef, { precio }, { merge: true });
-````
+```
+
 ---
 
 ### Servicios y hooks relacionados
@@ -264,14 +272,22 @@ La gestión del CRUD se encuentra organizada mediante:
 - `discoService.js`
   - Operaciones de consulta del catálogo público.
   - Obtención de discos y detalles.
+  - Escucha en tiempo real del catálogo mediante `escucharDiscos()`.
 
 - `adminServices.js`
   - Operaciones administrativas sobre Firestore.
   - Creación, actualización, desactivación y eliminación de discos.
+  - Actualización independiente del precio.
+  - Escucha en tiempo real de los discos mediante `escucharDiscosAdmin()`.
 
 - `useDiscosAdmin.js`
   - Hook personalizado que centraliza la lógica del panel administrativo.
-  - Maneja carga de datos, estados de loading, errores y acciones CRUD.
+  - Maneja el estado de los discos, loading, errores y acciones CRUD.
+  - Mantiene sincronizada la lista administrativa mediante la suscripción a Firestore.
+
+- `useDiscos.js`
+  - Hook personalizado para gestionar el catálogo público.
+  - Mantiene sincronizada la lista de discos mediante una suscripción a Firestore.
 
 ## Tools
 
@@ -283,7 +299,7 @@ La herramienta `tools/importarDiscos.js` permite cargar los datos del catálogo 
 
 ```text
 public/data/discos.json
-````
+```
 
 Los datos son procesados mediante Node.js y enviados a la colección `discos` de Firestore.
 
