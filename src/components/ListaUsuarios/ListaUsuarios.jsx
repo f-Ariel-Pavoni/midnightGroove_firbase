@@ -1,6 +1,6 @@
-const ListaDiscos = ({ discos, renderCard, layout }) => {
-  if (discos.length === 0) {
-    return <p>No hay discos disponibles para mostrar.</p>;
+const ListaUsuarios = ({ usuarios, renderCard, layout }) => {
+  if (usuarios.length === 0) {
+    return <p>No hay usuarios disponibles para mostrar.</p>;
   }
 
   const obtenerClaseColumna = (layout) => {
@@ -20,13 +20,13 @@ const ListaDiscos = ({ discos, renderCard, layout }) => {
 
   return (
     <div className="row g-4">
-      {discos.map((disco) => (
-        <div className={obtenerClaseColumna(layout)} key={disco.id}>
-          {renderCard(disco)}
+      {usuarios.map((usuario) => (
+        <div className={obtenerClaseColumna(layout)} key={usuario.firebaseId}>
+          {renderCard(usuario)}
         </div>
       ))}
     </div>
   );
 };
 
-export default ListaDiscos;
+export default ListaUsuarios;
