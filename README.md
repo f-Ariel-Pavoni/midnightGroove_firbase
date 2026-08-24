@@ -47,6 +47,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null;
     }
+    match /usuarios/{documentId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
     match /audit/{documentId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null;
@@ -261,6 +265,28 @@ Al utilizar:
 
 ```js
 await setDoc(discoRef, { precio }, { merge: true });
+```
+
+## Usuarios
+
+Se implementó el alta de usuarios utilizando **Firebase Authentication** y **Cloud Firestore**.
+
+El usuario se crea mediante `createUserWithEmailAndPassword()` y luego se almacena su información adicional en la colección `usuarios` de Firestore.
+
+Para guardar el documento se utiliza `setDoc()` utilizando el `uid` generado por Firebase Authentication como ID del documento:
+
+```js
+const { uid } = userCredential.user;
+
+const usuarioRef = doc(db, "usuarios", uid);
+
+await setDoc(usuarioRef, {
+  nombre,
+  apellido,
+  email,
+  rol,
+  activo: true,
+});
 ```
 
 ---

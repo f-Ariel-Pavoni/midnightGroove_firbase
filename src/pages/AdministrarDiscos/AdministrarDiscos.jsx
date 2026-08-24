@@ -182,7 +182,7 @@ const AdministrarDiscos = () => {
           <EditorPrecio
             disco={discoEditarPrecio}
             accion={confirmarPrecio}
-            onClose={() => setDiscoEditarPrecio(null)}
+            onClose={() => setMostrarModal(null)}
           />
         </Modal>
       )}
