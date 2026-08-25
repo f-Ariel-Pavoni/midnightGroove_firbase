@@ -22,6 +22,7 @@ const AdministrarDiscos = () => {
     actualizarPrecio,
     crearDisco,
     eliminar,
+    operacion,
   } = useDiscosAdmin();
   const [mostrarModal, setMostrarModal] = useState(false);
   const [tipoMensaje, setTipoMensaje] = useState(null);
@@ -171,6 +172,7 @@ const AdministrarDiscos = () => {
             onClose={() => setMostrarFormulario(false)}
             onSubmit={handleGuardarDisco}
             ctaActivo={ctaActivo}
+            operacion={operacion}
           />
         </Modal>
       )}
