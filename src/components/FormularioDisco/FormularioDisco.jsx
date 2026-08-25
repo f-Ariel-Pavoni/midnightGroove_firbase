@@ -5,7 +5,13 @@ import { discoSchema as schema } from "../../schemas/discoSchema";
 import usePortadas from "../../hooks/usePortadas";
 import FormularioTracklist from "../FormularioTracklist/FormularioTracklist";
 
-const FormularioDisco = ({ onClose, onSubmit, ctaActivo, disco }) => {
+const FormularioDisco = ({
+  onClose,
+  onSubmit,
+  ctaActivo,
+  disco,
+  operacion,
+}) => {
   const methods = useForm({
     resolver: zodResolver(schema),
   });
@@ -229,7 +235,20 @@ const FormularioDisco = ({ onClose, onSubmit, ctaActivo, disco }) => {
           </button>
 
           <button type="submit" className="btn btn-dark" disabled={!ctaActivo}>
-            {esEdicion ? "Guardar cambios" : "Agregar"}
+            {operacion === "crearDisco" || operacion === "actualizar" ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                {esEdicion ? "Guardando cambios..." : "Agregando disco..."}
+              </>
+            ) : esEdicion ? (
+              "Guardar cambios"
+            ) : (
+              "Agregar"
+            )}
           </button>
         </div>
       </form>
