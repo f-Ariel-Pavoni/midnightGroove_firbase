@@ -35,10 +35,12 @@ const useAuth = () => {
   };
 
   useEffect(() => {
-    escucharSesion((usuario) => {
+    const cancelar = escucharSesion((usuario) => {
       setUser(usuario);
       setLoading(false);
     });
+
+    return cancelar;
   }, []);
 
   return {
