@@ -16,7 +16,6 @@ const AdministrarDiscos = () => {
     discos,
     loading,
     error,
-    desactivar,
     toggleEstado,
     actualizar,
     actualizarPrecio,
@@ -160,6 +159,7 @@ const AdministrarDiscos = () => {
           textoAccion={mensajeAccionBtn}
           onClose={() => setMostrarModal(false)}
           accion={accion}
+          operacion={operacion}
         />
       )}
       {mostrarFormulario && (
@@ -184,7 +184,8 @@ const AdministrarDiscos = () => {
           <EditorPrecio
             disco={discoEditarPrecio}
             accion={confirmarPrecio}
-            onClose={() => setMostrarModal(null)}
+            onClose={() => setDiscoEditarPrecio(null)}
+            operacion={operacion}
           />
         </Modal>
       )}

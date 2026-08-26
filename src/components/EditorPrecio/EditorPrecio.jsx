@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-const EditorPrecio = ({ disco, accion, onClose }) => {
+const EditorPrecio = ({ disco, accion, onClose, operacion }) => {
   const [nuevoPrecio, setNuevoPrecio] = useState(disco.precio);
-  const confirmar = () => {
-    accion(disco.firebaseId, nuevoPrecio);
+  const confirmar = async () => {
+    await accion(disco.firebaseId, nuevoPrecio);
     onClose();
   };
 
@@ -23,17 +23,37 @@ const EditorPrecio = ({ disco, accion, onClose }) => {
           type="number"
           className="form-control"
           value={nuevoPrecio}
+          disabled={Boolean(operacion)}
           onChange={(e) => setNuevoPrecio(e.target.value)}
         />
       </div>
 
       <div className="d-flex justify-content-center gap-2">
-        <button className="btn btn-secondary" onClick={onClose}>
+        <button
+          className="btn btn-secondary"
+          onClick={onClose}
+          disabled={Boolean(operacion)}
+        >
           Cancelar
         </button>
 
-        <button className="btn btn-primary" onClick={confirmar}>
-          Confirmar
+        <button
+          className="btn btn-dark"
+          disabled={Boolean(operacion)}
+          onClick={confirmar}
+        >
+          {operacion === "actualizarPrecio" ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Guardando cambios...
+            </>
+          ) : (
+            "Confirmar"
+          )}
         </button>
       </div>
     </>
