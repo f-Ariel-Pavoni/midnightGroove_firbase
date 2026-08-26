@@ -16,14 +16,18 @@ import { registrarAuditoria } from "./auditService";
 const discosRef = collection(db, "discos");
 
 // Escuchar discos con todos los estados
-export const escucharDiscosAdmin = (callback) => {
-  return onSnapshot(discosRef, (snapshot) => {
-    const discos = snapshot.docs.map((doc) => ({
-      firebaseId: doc.id,
-      ...doc.data(),
-    }));
-    callback(discos);
-  });
+export const escucharDiscosAdmin = (callback, onError) => {
+  return onSnapshot(
+    discosRef,
+    (snapshot) => {
+      const discos = snapshot.docs.map((doc) => ({
+        firebaseId: doc.id,
+        ...doc.data(),
+      }));
+      callback(discos);
+    },
+    onError,
+  );
 };
 
 // Obtener discos con todos los estados

@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import AdministarDiscos from "./pages/AdministrarDiscos/AdministrarDiscos";
 import RutaProtegida from "./components/RutaProtegida/RutaProtegida";
 import AdministarUsuarios from "./pages/AdministrarUsuarios/AdministarUsuarios";
+import NotFound from "./pages/NotFound/NotFound";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           <Route path="dashboard/usuarios" element={<AdministarUsuarios />} />
         </Route>
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

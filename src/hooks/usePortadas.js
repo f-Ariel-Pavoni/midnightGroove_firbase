@@ -3,7 +3,7 @@ import { getPortadas } from "../services/adminServices";
 
 const usePortadas = () => {
   const [portadas, setPortadas] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const obtenerPortadas = async () => {

@@ -23,6 +23,7 @@ const useDiscosAdmin = () => {
     } catch (error) {
       console.error("ERROR DESACTIVANDO DISCO:", error);
       setError(error);
+      throw error;
     } finally {
       setOperacion(null);
     }
@@ -36,6 +37,7 @@ const useDiscosAdmin = () => {
     } catch (error) {
       console.error("ERROR CAMBIANDO ESTADO:", error);
       setError(error);
+      throw error;
     } finally {
       setOperacion(null);
     }
@@ -49,6 +51,7 @@ const useDiscosAdmin = () => {
     } catch (error) {
       console.error("ERROR ACTUALIZANDO DISCO:", error);
       setError(error);
+      throw error;
     } finally {
       setOperacion(null);
     }
@@ -62,6 +65,7 @@ const useDiscosAdmin = () => {
     } catch (error) {
       console.error("ERROR ACTUALIZANDO PRECIO:", error);
       setError(error);
+      throw error;
     } finally {
       setOperacion(null);
     }
@@ -75,6 +79,7 @@ const useDiscosAdmin = () => {
     } catch (error) {
       console.error("ERROR ELIMINANDO DISCO:", error);
       setError(error);
+      throw error;
     } finally {
       setOperacion(null);
     }
@@ -89,16 +94,24 @@ const useDiscosAdmin = () => {
     } catch (error) {
       console.error("ERROR AGREGANDO DISCO:", error);
       setError(error);
+      throw error;
     } finally {
       setOperacion(null);
     }
   };
 
   useEffect(() => {
-    const cancelar = escucharDiscosAdmin((data) => {
-      setDiscos(data);
-      setLoading(false);
-    });
+    const cancelar = escucharDiscosAdmin(
+      (data) => {
+        setDiscos(data);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("ERROR CARGANDO DISCOS:", error);
+        setError(error);
+        setLoading(false);
+      },
+    );
 
     return cancelar;
   }, []);

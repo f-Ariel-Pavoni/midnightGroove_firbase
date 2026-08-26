@@ -5,7 +5,6 @@ import { escucharDiscos } from "../services/discoService";
 const useDiscos = () => {
   const [discos, setDiscos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const cancelar = escucharDiscos((data) => {
