@@ -1,8 +1,15 @@
 import "./ModalEstado.css";
 
-const ModalEstado = ({ tipo, mensaje, accion, textoAccion, onClose }) => {
-  const confirmar = () => {
-    accion();
+const ModalEstado = ({
+  tipo,
+  mensaje,
+  accion,
+  textoAccion,
+  onClose,
+  operacion,
+}) => {
+  const confirmar = async () => {
+    await accion();
     onClose();
   };
 
@@ -17,13 +24,36 @@ const ModalEstado = ({ tipo, mensaje, accion, textoAccion, onClose }) => {
           <p className="card-text">{mensaje}</p>
 
           <div className="d-flex justify-content-center gap-2">
-            <button className="btn btn-secondary" onClick={onClose}>
+            <button
+              className="btn btn-secondary"
+              onClick={onClose}
+              disabled={Boolean(operacion)}
+            >
               Cerrar
             </button>
 
             {accion && (
-              <button className="btn btn-primary" onClick={confirmar}>
-                {textoAccion}
+              <button
+                className="btn btn-primary"
+                onClick={confirmar}
+                disabled={
+                  operacion === "eliminar" || operacion === "toggleEstado"
+                }
+              >
+                {operacion === "eliminar" || operacion === "toggleEstado" ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    {operacion === "eliminar"
+                      ? "Eliminando..."
+                      : "Actualizando estado..."}
+                  </>
+                ) : (
+                  textoAccion
+                )}
               </button>
             )}
           </div>

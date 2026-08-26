@@ -2,17 +2,13 @@ MidnightGroove
 
 ## Descripción
 
-**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. Este proyecto es la evolución de la tarea de enrutamiento. Actualmente comprende todos los temas tratados en la cursada, los mismos se detallan en este documento.
+**MidnightGroove** es una aplicación web desarrollada con React que simula un catálogo de discos de jazz en vinilo. El proyecto integra los principales contenidos trabajados durante la cursada, incluyendo React, React Router, formularios, validación, Firebase Authentication y Cloud Firestore.
 
-### Para las tareas 1 y 2 del módulo 3 (Integración con Firebase)
+La aplicación cuenta con un catálogo público de discos y un panel administrativo desde el cual se pueden gestionar los registros almacenados en Firebase.
 
-Durante la evolución del proyecto se realizó una migración desde una fuente de datos local basada en archivos JSON hacia una arquitectura utilizando servicios de Firebase.
+Los discos se almacenan en la colección `discos` de **Cloud Firestore**. Cada documento representa un álbum del catálogo e incluye información como título, artista, año, género, sello discográfico, descripción, precio, portada, tracklist y estado del registro.
 
-Inicialmente el catálogo de discos se encontraba almacenado en un archivo `discos.json` dentro de la carpeta pública del proyecto. Esta estructura permitía simular una API mediante la carga de datos locales, pero presentaba limitaciones al momento de implementar operaciones administrativas y persistencia real de información.
-
-Para solucionar esto se creó un proyecto en Firebase y se configuró **Cloud Firestore** como base de datos NoSQL. Dentro de Firestore se creó la colección `discos`, donde cada documento representa un álbum del catálogo. La información almacenada incluye datos como título, artista, año, género, sello discográfico, descripción, precio, portada y estado del registro.
-
-La comunicación con Firestore fue encapsulada dentro de la carpeta `services/`, evitando que los componentes de React tengan conocimiento directo de la implementación de la base de datos. Para esto se utilizaron los métodos proporcionados por el SDK de Firebase:
+La comunicación con Firestore está encapsulada dentro de la carpeta `services/`, evitando que los componentes de React tengan conocimiento directo de la implementación de la base de datos. Para esto se utilizan los métodos proporcionados por el SDK de Firebase:
 
 - `collection()` para obtener referencias a las colecciones de Firestore.
 - `getDocs()` para recuperar múltiples documentos.
@@ -21,17 +17,20 @@ La comunicación con Firestore fue encapsulada dentro de la carpeta `services/`,
 - `doc()` para trabajar con documentos específicos.
 - `addDoc()` para crear nuevos registros.
 - `updateDoc()` para modificar información existente.
+- `setDoc()` con `merge` para realizar actualizaciones parciales.
 - `deleteDoc()` para eliminar documentos.
 
-A partir de esta implementación se construyeron los servicios necesarios para gestionar el catálogo, permitiendo realizar operaciones CRUD desde el panel administrativo.
+A partir de esta implementación se construyeron los servicios necesarios para gestionar el catálogo, permitiendo realizar operaciones CRUD desde el panel administrativo. Además, se implementó la modificación del estado `activo/inactivo` de los discos como operación adicional sobre un campo booleano.
 
-Además, se desarrolló una herramienta auxiliar utilizando Node.js (`tools/importarDiscos.js`) que permite cargar inicialmente los datos desde el archivo JSON hacia Firestore. Esta herramienta contempla dos modos de funcionamiento: una carga completa mediante la eliminación y recreación de la colección, y una carga incremental que compara los identificadores existentes antes de insertar nuevos registros.
+El proyecto también incluye una herramienta auxiliar desarrollada con Node.js (`tools/importarDiscos.js`) que permite cargar los datos iniciales del catálogo desde un archivo JSON hacia Firestore. La herramienta contempla modos de carga completa e incremental.
 
-Para la autenticación del panel administrativo se implementó **Firebase Authentication**, reemplazando la autenticación simulada utilizada durante las primeras etapas del proyecto. Se configuró el proveedor de autenticación mediante correo electrónico y contraseña, utilizando el método `signInWithEmailAndPassword()` del SDK de Firebase.
+Para la autenticación del panel administrativo se utiliza **Firebase Authentication**, con acceso mediante correo electrónico y contraseña a través del método `signInWithEmailAndPassword()` del SDK de Firebase.
 
-La lógica de autenticación fue separada mediante un servicio (`authService.js`) y un hook personalizado (`useAuth.js`). El servicio se encarga de comunicarse con Firebase, mientras que el hook administra el estado del usuario autenticado, errores y acciones disponibles para los componentes.
+La lógica de autenticación está separada mediante un servicio (`authService.js`) y un hook personalizado (`useAuth.js`). El servicio se encarga de comunicarse con Firebase, mientras que el hook administra el estado del usuario autenticado, errores y acciones disponibles para los componentes.
 
-El acceso al Dashboard administrativo fue protegido mediante rutas privadas, verificando la existencia de un usuario autenticado antes de permitir la navegación. En caso contrario, el usuario es redirigido al Login conservando la ruta original para poder continuar luego de autenticarse correctamente.
+La persistencia de la sesión está configurada mediante `browserSessionPersistence`, manteniendo la autenticación durante la sesión del navegador.
+
+El acceso al Dashboard administrativo está protegido mediante rutas privadas, verificando la existencia de un usuario autenticado antes de permitir la navegación. En caso contrario, el usuario es redirigido al Login conservando la ruta original para poder continuar luego de autenticarse correctamente.
 
 ## Configuracion de reglas en Firebase:
 
@@ -469,3 +468,4 @@ Proyecto desarrollado como trabajo práctico para la **Diplomatura Full Stack - 
 - React Hook Form: https://react-hook-form.com/
 - Zod: https://zod.dev/
 - Firebase: https://firebase.google.com/docs?hl=es-419
+- Firebase para tema persistencia de sesion: https://firebase.google.com/docs/auth/web/auth-state-persistence?utm_source=chatgpt.com&hl=es-419

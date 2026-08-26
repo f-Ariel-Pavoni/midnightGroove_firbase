@@ -2,10 +2,13 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  setPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 
 export const login = async (email, password) => {
+  await setPersistence(auth, browserSessionPersistence);
   const respuesta = await signInWithEmailAndPassword(auth, email, password);
   return respuesta.user;
 };
@@ -15,5 +18,5 @@ export const logOut = async () => {
 };
 
 export const escucharSesion = (callback) => {
-  onAuthStateChanged(auth, callback);
+  return onAuthStateChanged(auth, callback);
 };
